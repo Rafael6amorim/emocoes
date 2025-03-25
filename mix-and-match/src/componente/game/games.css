@@ -1,0 +1,97 @@
+.Game {
+    height: 100vh;
+}
+
+.Game-header {
+    background-color: #f4e4d7;
+
+}
+
+.game-main {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 30% 50% 20%;
+    grid-template-rows: 20% 60% 20%;
+    grid-template-areas: "expressions expressions expressions"
+        "doll doll clothes"
+        ". . clothes";
+}
+
+.expressions {
+    grid-area: expressions;
+    display: flex;
+    justify-content: center;
+}
+
+.doll {
+    grid-area: doll;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+aside {
+    grid-area: clothes;
+    border: 1px solid black;
+    overflow-x:hidden ;
+}
+
+.doll .boneco-img {
+    width: 150px;
+}
+
+ul{ 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    color: black;
+    margin: 0;
+    width: 100%;
+    margin: 3px;
+}
+ul li {
+    width: 100px;
+    height: 100px;
+    list-style: none;
+    padding: 5px 0 ;
+    transition: 0.3s ease-in-out;
+}
+ul li:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+ul li img {
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+}
+.ul-expressions{
+    flex-direction: row;
+    padding:  10px 0;
+    height: 100%;
+}
+.ul-expressions li{
+    width: 100px;
+    height: 40px;
+    margin: 0 10px;
+}
+.alegria{
+    background-color: #eade0b;
+}
+.raiva{
+    background-color: #d31111;
+}
+.nojo{
+    background-color: #33bc37;
+}
+.medo{
+    background-color: #7d3fca;
+}
+.tristeza{
+    background-color: #1190b8;
+}
