@@ -16,6 +16,12 @@
         "doll doll clothes"
         ". . clothes";
 }
+.game-main.show {
+    grid-template-columns: 60% 10% 30%;
+    grid-template-areas: "expressions expressions expressions"
+        "doll  clothes guarda-roupa"
+        ".  clothes guarda-roupa";
+}
 
 .expressions {
     grid-area: expressions;
@@ -94,4 +100,30 @@ ul li img {
 }
 .tristeza{
     background-color: #1190b8;
+}
+
+.guarda-roupa{
+    grid-area: guarda-roupa;
+    background-color: red;
+    display: none;
+    border: 1px solid black;
+    overflow: hidden;
+    flex-direction: column;
+}
+.containerImags{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+.img-clothes{
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+.containerTitle{
+    text-align: center;
+    background-color: rebeccapurple;
 }
