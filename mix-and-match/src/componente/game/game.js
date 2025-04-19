@@ -1,151 +1,188 @@
-import './games.css';
-import React, { useState } from 'react';
+import "./games.css";
+import React, { useState } from "react";
 
-function Game() {
-    const boneco = process.env.PUBLIC_URL + "/assets/bonecos/image.png";
-    const cabeca = process.env.PUBLIC_URL + "/assets/faces/cabeca.png";
-    const hairGirl = process.env.PUBLIC_URL + "/assets/hair/girl-hear-principal.png";
-    const hairMAin = process.env.PUBLIC_URL + "/assets/hair/main-hear.png";
-    const shirt = process.env.PUBLIC_URL + "/assets/shirsts/shirt-principal.png";
-    const paints = process.env.PUBLIC_URL + "/assets/pants/pant-principal.png";
+const Game = () => {
+  const assetsPath = process.env.PUBLIC_URL + "/assets";
 
-    // guarda roupa
-    const guardaRoupa = [
-        process.env.PUBLIC_URL + "/assets/guarda-roupa/image-1.png",
-        process.env.PUBLIC_URL + "/assets/guarda-roupa/image-2.png",
-        process.env.PUBLIC_URL + "/assets/guarda-roupa/image-3.png"
-    ];
+  const items = {
+    cabeca: `${assetsPath}/faces/cabeca.png`,
+    hairGirl: `${assetsPath}/hair/girl-hear-principal.png`,
+    hairMain: `${assetsPath}/hair/main-hear.png`,
+    shirt: `${assetsPath}/shirsts/mix-and-match/public/assets/hirsts/Imagem do WhatsApp de 2025-04-04 à(s) 21.20.56_bb1f17c9.png`,
+    paints: `${assetsPath}/pants/pant-principal.png`,
+    boneco: `${assetsPath}/bonecos/image.png`,
+    main: `${assetsPath}/hair/Jogo_Projeto .zip - 16.png`,
+    shirtMain: `${assetsPath}/shirsts/Jogo_Projeto .zip - 1.png`,
+    esprecoes:`${assetsPath}/espreções/Jogo_Projeto .zip - 43.png`,
+  };
+
+  const esprecoesItens = {
+    alegria: `${assetsPath}/espreções/alegria.png`,
+    raiva:`${assetsPath}/espreções/raiva.png`,
+    nojo:`${assetsPath}/espreções/noj.png`,
+    medo:`${assetsPath}/espreções/medo.png`,
+    tristeza:`${assetsPath}/espreções/Jogo_Projeto .zip - 43.png`,
+  }
+  
+
+  const guardaRoupa = [
+    `${assetsPath}/hair/Jogo_Projeto .zip - 40.png`,
+    `${assetsPath}/hair/0.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 16.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 17.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 18.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 19.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 20.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 21.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 22.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 23.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 24.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 25.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 26.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 27.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 28.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 29.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 31.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 32.png(1)`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 33.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 34.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 35.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 36.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 37.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 38.png`,
+    `${assetsPath}/hair/Jogo_Projeto .zip - 39.png`,
+  ];
+
+  const guardaRoupaPaints = [
+    `${assetsPath}/pants/0.png`,
+    `${assetsPath}/pants/Jogo_Projeto .zip - 11.png`,
+    `${assetsPath}/pants/Jogo_Projeto .zip - 13.png`,
+    `${assetsPath}/pants/Jogo_Projeto .zip - 14.png`,
+    `${assetsPath}/pants/Jogo_Projeto .zip - 15.png`,
+  ];
+  const guardaRoupaShirts = [
+    `${assetsPath}/shirsts/0.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 1.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 2.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 3(1).png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 4.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 6.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 8.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 9.png`,
+    `${assetsPath}/shirsts/Jogo_Projeto .zip - 10.png`,
+  ];
 
 
-    const [showMain, setShowMain] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [bgColor, setBgColor] = useState("rebeccapurple");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isClothesVisible, setClothesVisible] = useState(false);
 
-    // Atualizar para adicionar apenas o item específico
+  const handleClick = (itemKey) => {
+    setSelectedItem(itemKey);
+    setClothesVisible(true);
+  };
 
-    const handleClick = (item) => {
-        setSelectedItem(prevItem => (prevItem === item ? null : item)); // Alterna entre mostrar e ocultar
-        setShowMain(true);
-        if (item === cabeca) setBgColor("blue");
-        else if (item === hairMAin) setBgColor("green");
-        else if (item === hairGirl) setBgColor("pink");
-        else if (item === shirt) setBgColor("red");
-        else if (item === paints) setBgColor("yellow");
-    };
+  const closeWardrobe = () => {
+    setClothesVisible(false);
+  };
 
-    return (
-        <div className="Game">
-            <header className="Game-header">
-                <main className={`game-main ${showMain ? "show" : ""}`}>
-                    <section className="expressions">
-                        <ul className="ul-expressions">
-                            <li className="alegria"></li>
-                            <li className="medo"></li>
-                            <li className="raiva"></li>
-                            <li className="nojo"></li>
-                            <li className="tristesa"></li>
-                        </ul>
-                    </section>
-                    <section className='doll'>
-                        <img src={boneco} className="boneco-img" alt="img do boneco" />
-                    </section>
-                    <aside className='clothes'>
-                        <h4>Escolha seu personagem</h4>
-                        <ul>
-                            <li onClick={() => handleClick(cabeca)}>
-                                <img src={cabeca} className="cabeca-img" alt="img da cabeça" />
-                            </li>
-                            <hr />
-                            <li onClick={() => handleClick(hairMAin)}>
-                                <img src={hairMAin} className="hair-img" alt="img do cabelo" />
-                            </li>
-                            <hr />
-                            <li onClick={() => handleClick(hairGirl)}>
-                                <img src={hairGirl} className="hair-img" alt="img do cabelo" />
-                            </li>
-                            <hr />
-                            <li onClick={() => handleClick(shirt)}>
-                                <img src={shirt} className="shirt-img" alt="img shirt" />
-                            </li>
-                            <hr />
-                            <li onClick={() => handleClick(paints)}>
-                                <img src={paints} className="paints-img" alt="img paints" />
-                            </li>
-                        </ul>
-                    </aside>
-                    <div className="all-wardrobes">
-                        {selectedItem === cabeca && (
-                            <div className="guarda-roupa" style={{ display: 'flex' }}>
-                           <div className='containerTitle'>
-                                    <h4>Escolha a cabeça</h4>
-                                </div>
-                                <div className='containerImags'  style={{ backgroundColor: bgColor }}>
-                                    {guardaRoupa.map((item, index) => (
-                                        <img key={index} src={item} className="img-clothes" alt={`Cabeça ${index}`} />
-                                    ))}
-                                </div>
-                                
-                            </div>
-              
-                        )}
+  return (
+    <div className="Game">
+      <header className="Game-header">
+        <main className={`game-main ${isClothesVisible ? "show" : ""}`}>
+          <section className="expressions">
+            <ul className="ul-expressions">
+              <li className="alegria">  <img src={esprecoesItens.alegria} className="boneco-img" alt="img do boneco" /></li>
+              <li className="medo">  <img src={esprecoesItens.medo} className="boneco-img" alt="img do boneco" /></li>
+              <li className="raiva">  <img src={esprecoesItens.raiva} className="boneco-img" alt="img do boneco" /></li>
+              <li className="nojo">  <img src={esprecoesItens.nojo} className="boneco-img" alt="img do boneco" /></li>
+              <li className="tristeza">  <img src={esprecoesItens.tristeza} className="boneco-img" alt="img do boneco" /></li>
+            </ul>
+          </section>
 
-                        {selectedItem === hairMAin && (
-                            <div className="guarda-roupa" style={{ display: 'flex' }}>
-                           <div className='containerTitle'>
-                                    <h4>Escolha o cabelo dele</h4>
-                                </div>
-                                <div className='containerImags'  style={{ backgroundColor: bgColor }}>
-                                    {guardaRoupa.map((item, index) => (
-                                        <img key={index} src={item} className="img-clothes" alt={`Cabelo Masculino ${index}`} />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+          <section className="doll">
+            <div className="bonecoMainTest">
+              <img src={items.boneco} className="boneco-img" alt="img do boneco" />
+            </div>
+            <div className="hairMainTest">
+              <img src={items.main} className="hair-img" alt="img do cabelo" />
+            </div>
+            <div className="shirtrMainTest">
+              <img src={items.shirtMain} className="shirt-img" alt="img do blusa" />
+            </div>
+            <div className="esprecaoMainTest">
+              <img src={items.esprecoes} className="esprecao-img" alt="img da espreções" />
+            </div>
+          </section>
 
-                        {selectedItem === hairGirl && (
-                            <div className="guarda-roupa" style={{ display: 'flex' }}>
-                           <div className='containerTitle'>
-                                    <h4>Escolha o cabelo dela</h4>
-                                </div>
-                                <div className='containerImags'  style={{ backgroundColor: bgColor }}>
-                                    {guardaRoupa.map((item, index) => (
-                                        <img key={index} src={item} className="img-clothes" alt={`Cabelo Feminino ${index}`} />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+          <aside className="clothes">
+            <h4>Escolha seu personagem</h4>
+            <ul>
+              {Object.entries(items)
+                .filter(([key]) => key !== "boneco") // Evita listar o boneco
+                .map(([key, src]) => (
+                  <React.Fragment key={key}>
+                    <li onClick={() => handleClick(key)}>
+                      <img src={src} className={`${key}-img`} alt={`img ${key}`} />
+                    </li>
+                    <hr />
+                  </React.Fragment>
+                ))}
+            </ul>
+          </aside>
 
-                        {selectedItem === shirt && (
-                            <div className="guarda-roupa" style={{ display: 'flex' }}>
-                           <div className='containerTitle'>
-                                    <h4>Escolha a camiseta</h4>
-                                </div>
-                                <div className='containerImags'  style={{ backgroundColor: bgColor }}>
-                                    {guardaRoupa.map((item, index) => (
-                                        <img key={index} src={item} className="img-clothes" alt={`Camisa ${index}`} />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+          {isClothesVisible && (
+            <Wardrobe
+              selectedItem={selectedItem}
+              guardaRoupa={guardaRoupa}
+              guardaRoupaPaints={guardaRoupaPaints}
+              guardaRoupaShirts={guardaRoupaShirts}
+              onClose={closeWardrobe}
+            />
+          )}
+        </main>
+      </header>
+    </div>
+  );
+};
 
-                        {selectedItem === paints && (
-                            <div className="guarda-roupa" style={{ display: 'flex' }}>
-                           <div className='containerTitle'>
-                                    <h4>Escolha a calça</h4>
-                                </div>
-                                <div className='containerImags'  style={{ backgroundColor: bgColor }}>
-                                    {guardaRoupa.map((item, index) => (
-                                        <img key={index} src={item} className="img-clothes" alt={`Calça ${index}`} />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    
-                </main >
-            </header >
-        </div >
-    );
-}
+// **Componente para a guarda-roupa**
+const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaPaints, guardaRoupaShirts, onClose }) => {
+  const titles = {
+    cabeca: "Escolha a cabeça",
+    hairMain: "Escolha o cabelo dele",
+    hairGirl: "Escolha o cabelo dela",
+    shirt: "Escolha a camiseta",
+    paints: "Escolha a calça",
+  };
+
+  let wardrobeItems = [];
+
+  if (selectedItem === "shirt") {
+    wardrobeItems = guardaRoupaShirts;
+  } else if (selectedItem === "paints") {
+    wardrobeItems = guardaRoupaPaints;
+  } else {
+    wardrobeItems = guardaRoupa;
+  }
+
+  return (
+    <div className="guarda-roupa" style={{ display: "flex" }}>
+      <div className="containerTitle">
+        <h4>{titles[selectedItem]}</h4>
+      </div>
+      <div className="containerImags">
+        {wardrobeItems.map((item, index) => (
+          <img
+            key={index}
+            src={item}
+            className="img-clothes"
+            alt={`${titles[selectedItem]} ${index}`}
+            onClick={onClose}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Game;

@@ -42,9 +42,7 @@ aside {
     overflow-x:hidden ;
 }
 
-.doll .boneco-img {
-    width: 150px;
-}
+
 
 ul{ 
     display: flex;
@@ -82,9 +80,12 @@ ul li img {
     height: 100%;
 }
 .ul-expressions li{
-    width: 100px;
-    height: 40px;
+    width: 120px;
+    height: 70px;
     margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .alegria{
     background-color: #eade0b;
@@ -104,7 +105,6 @@ ul li img {
 
 .guarda-roupa{
     grid-area: guarda-roupa;
-    background-color: red;
     display: none;
     border: 1px solid black;
     overflow: hidden;
@@ -117,13 +117,42 @@ ul li img {
     overflow: auto;
 }
 .img-clothes{
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border: 1px solid black;
     padding: 10px;
     margin: 10px;
+    transition: 0.3s ease-in-out;
+}
+.img-clothes:hover{
+    cursor: pointer;
+    transform: scale(1.1);
 }
 .containerTitle{
     text-align: center;
-    background-color: rebeccapurple;
+}
+.doll .boneco-img {
+    width: 150px;
+    height: 300px;
+    position: relative;
+}
+.hair-img{
+    width: 300px;
+    height: 100px;
+    position: absolute;
+    top: 35%;
+    right: 51.4%;
+}
+.shirt-img{
+    width: 485px;
+    height: 200px;
+    position: absolute;
+    top: 42.7%;
+    right: 43.4%;
+}
+.esprecao-img{
+    width: 90px;
+    position: absolute;
+    top: 36%;
+    right: 57%;
 }
