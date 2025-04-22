@@ -3,22 +3,40 @@
 }
 
 .Game-header {
-    background-color: #f4e4d7;
-
-}
-
-.game-main {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .img-fundo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* cobre toda a área sem distorcer */
+    z-index: 0;
+  }
+  
+  .game-main {
+    position: relative; /* necessário pra o z-index funcionar */
+    z-index: 10; /* maior que o fundo */
     height: 100vh;
     display: grid;
     grid-template-columns: 30% 50% 20%;
     grid-template-rows: 20% 60% 20%;
-    grid-template-areas: "expressions expressions expressions"
-        "doll doll clothes"
-        ". . clothes";
-}
+    grid-template-areas: 
+      ". . clothes"
+      ". . clothes"
+      ". . clothes";
+      z-index: 100;
+  }
+  
+
 .game-main.show {
     grid-template-columns: 60% 10% 30%;
-    grid-template-areas: "expressions expressions expressions"
+    grid-template-areas: ". clothes guarda-roupa"
         "doll  clothes guarda-roupa"
         ".  clothes guarda-roupa";
 }
@@ -31,40 +49,45 @@
 
 .doll {
     grid-area: doll;
-    display: flex;
-    justify-content: center;
-    align-items: end;
+    position: absolute;
+    top: 33%;
+    right: 41%;
 }
 
 aside {
     grid-area: clothes;
     border: 1px solid black;
-    overflow-x:hidden ;
+    overflow-x: hidden;
+    background-color: #EEDFB4;
 }
 
 
 
-ul{ 
+ul {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
     padding: 0;
+
 }
-hr{
+
+hr {
     color: black;
     margin: 0;
     width: 100%;
     margin: 3px;
 }
+
 ul li {
     width: 100px;
     height: 100px;
     list-style: none;
-    padding: 5px 0 ;
+    padding: 5px 0;
     transition: 0.3s ease-in-out;
 }
-ul li:hover{
+
+ul li:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -74,12 +97,14 @@ ul li img {
     width: 100px;
     height: 100px;
 }
-.ul-expressions{
+
+.ul-expressions {
     flex-direction: row;
-    padding:  10px 0;
+    padding: 10px 0;
     height: 100%;
 }
-.ul-expressions li{
+
+.ul-expressions li {
     width: 120px;
     height: 70px;
     margin: 0 10px;
@@ -87,36 +112,47 @@ ul li img {
     justify-content: center;
     align-items: center;
 }
-.alegria{
+
+.alegria {
     background-color: #eade0b;
 }
-.raiva{
+
+.raiva {
     background-color: #d31111;
 }
-.nojo{
+
+.nojo {
     background-color: #33bc37;
 }
-.medo{
+
+.medo {
     background-color: #7d3fca;
 }
-.tristeza{
+
+.tristeza {
     background-color: #1190b8;
 }
+.img-container{
+    margin: 10px;
+}
 
-.guarda-roupa{
+.guarda-roupa {
+    background-color: #EEDFB4;
     grid-area: guarda-roupa;
     display: none;
     border: 1px solid black;
     overflow: hidden;
     flex-direction: column;
 }
-.containerImags{
+
+.containerImags {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     overflow: auto;
 }
-.img-clothes{
+
+.img-clothes {
     width: 120px;
     height: 120px;
     border: 1px solid black;
@@ -124,35 +160,166 @@ ul li img {
     margin: 10px;
     transition: 0.3s ease-in-out;
 }
-.img-clothes:hover{
+
+.img-clothes:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
-.containerTitle{
+
+.containerTitle {
     text-align: center;
 }
 .doll .boneco-img {
-    width: 150px;
-    height: 300px;
+    width: 300px;
+    height: 500px;
     position: relative;
 }
-.hair-img{
+
+
+/* Cabelo longo liso feminino */
+.hair-longo-liso-img {
     width: 300px;
     height: 100px;
     position: absolute;
     top: 35%;
     right: 51.4%;
+    z-index: 11;
 }
-.shirt-img{
+
+/* Cabelo longo cacheado feminino */
+.hair-longo-cacheado-img {
+    width: 280px;
+    position: absolute;
+    top: 26.9%;
+    right: 50.8%;
+    z-index: 11;
+}
+
+
+/* Cabelo curto liso masculino */
+.hair-curto-liso-img{
+    width: 110px;
+    position: absolute;
+    top: 33.6%;
+    right: 56.3%;
+}
+
+/* Cabelo curto cacheado masculino */
+.hair-curto-cacheado-img {
+    width: 115px;
+    position: absolute;
+    top: 32%;
+    right: 56%;
+}
+
+/* vestido */
+.dress-img{
     width: 485px;
     height: 200px;
     position: absolute;
     top: 42.7%;
     right: 43.4%;
+    z-index: 10;
 }
-.esprecao-img{
-    width: 90px;
+
+/* blusa */
+.shirt-img {
+    width: 400px;
     position: absolute;
+    top: 38.3%;
+    right: 46.2%;
+    z-index: 10;
+}
+
+/* Calça */
+.calca-img {
+    width: 403px;
+    position: absolute;
+    top: 50%;
+    right: 46.1%;
+}
+
+/* Classe base para todas as expressões */
+.esprecao-img {
+    position: absolute;
+    object-fit: contain;
+    transition: all 0.3s ease;
+  }
+  
+  /* Posicionamentos específicos */
+  .esprecao-img-alegria {
+    width: 100px;
+    top: 36%;
+    right: 56.5%;
+  }
+  
+  .esprecao-img-medo,
+  .esprecao-img-tristeza {
+    width: 90px;
     top: 36%;
     right: 57%;
+  }
+  
+  .esprecao-img-nojo {
+    width: 100px;
+    top: 37%;
+    right: 56.5%;
+    z-index: 12;
+  }
+  
+  .esprecao-img-raiva {
+    width: 90px;
+    top: 37%;
+    right: 56.9%;
+    z-index: 12;
+  }
+  
+  /* Container para posicionamento relativo */
+  .expressao-wrapper {
+    position: relative;
+    width: 0;
+    height: 0;
+  }
+
+@media(max-width:767px){
+    .game-main {
+        height: 100vh;
+        grid-template-columns: 30% 50% 20%;
+        grid-template-rows: 20% 60% 20%;
+        grid-template-areas: "expressions expressions expressions"
+            "doll doll doll"
+            "clothes clothes clothes";
+    }
+    .img-fundo {
+        height: 90%;
+      }
+    .clothes h4{
+        text-align: center;
+    }
+    .clothes ul {
+        flex-direction: row;
+    }
+    
+    .game-main.show {
+        grid-template-columns: 60% 10% 30%;
+        grid-template-rows: 20% 20% 60%;
+        grid-template-areas: "expressions expressions expressions"
+            "clothes clothes clothes"
+            "guarda-roupa  guarda-roupa guarda-roupa";
+    }
+
+    
+    .clothes{
+        background-color: bisque;
+        z-index: 100;
+    }
+    .guarda-roupa{
+        background-color: bisque;
+        z-index: 100;
+    }
+    .ul-expressions li {
+        width: 70px;
+        height: 70px;
+    }
 }
+  

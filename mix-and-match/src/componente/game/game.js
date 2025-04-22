@@ -4,54 +4,66 @@ import React, { useState } from "react";
 const Game = () => {
   const assetsPath = process.env.PUBLIC_URL + "/assets";
 
+  const fundos = {
+    banheiro: `${assetsPath}/fundo/banheiro.jpg`,
+    cozinha: `${assetsPath}/fundo/cozinha.jpg`,
+    escola: `${assetsPath}/fundo/escola.jpg`,
+    parque: `${assetsPath}/fundo/parque.jpg`,
+    praia: `${assetsPath}/fundo/praia.jpg`,
+    quarto: `${assetsPath}/fundo/quarto.jpg`,
+    sala: `${assetsPath}/fundo/SALA.jpg`,
+  };
+
   const items = {
     cabeca: `${assetsPath}/faces/cabeca.png`,
     hairGirl: `${assetsPath}/hair/girl-hear-principal.png`,
     hairMain: `${assetsPath}/hair/main-hear.png`,
-    shirt: `${assetsPath}/shirsts/mix-and-match/public/assets/hirsts/Imagem do WhatsApp de 2025-04-04 à(s) 21.20.56_bb1f17c9.png`,
+    shirtMain: `${assetsPath}/shirsts/shirt-principal.png`,
     paints: `${assetsPath}/pants/pant-principal.png`,
-    boneco: `${assetsPath}/bonecos/image.png`,
-    main: `${assetsPath}/hair/Jogo_Projeto .zip - 16.png`,
-    shirtMain: `${assetsPath}/shirsts/Jogo_Projeto .zip - 1.png`,
-    esprecoes:`${assetsPath}/espreções/Jogo_Projeto .zip - 43.png`,
+    boneco: `${assetsPath}/bonecos/boneco2.png`,
+    esprecao: `${assetsPath}/esprecoes/alegria.png`,
   };
 
-  const esprecoesItens = {
-    alegria: `${assetsPath}/espreções/alegria.png`,
-    raiva:`${assetsPath}/espreções/raiva.png`,
-    nojo:`${assetsPath}/espreções/noj.png`,
-    medo:`${assetsPath}/espreções/medo.png`,
-    tristeza:`${assetsPath}/espreções/Jogo_Projeto .zip - 43.png`,
-  }
-  
+
+  const esprecoesItens = [
+    { src: `${assetsPath}/esprecoes/alegria.png`, className: "alegria" },
+    { src: `${assetsPath}/esprecoes/raiva.png`, className: "raiva" },
+    { src: `${assetsPath}/esprecoes/noj.png`, className: "nojo" },
+    { src: `${assetsPath}/esprecoes/medo.png`, className: "medo" },
+    { src: `${assetsPath}/esprecoes/Jogo_Projeto .zip - 43.png`, className: "tristeza" },
+  ];
 
   const guardaRoupa = [
-    `${assetsPath}/hair/Jogo_Projeto .zip - 40.png`,
-    `${assetsPath}/hair/0.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 16.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 17.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 18.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 19.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 20.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 21.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 22.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 23.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 24.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 25.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 26.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 27.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 28.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 29.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 31.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 32.png(1)`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 33.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 34.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 35.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 36.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 37.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 38.png`,
-    `${assetsPath}/hair/Jogo_Projeto .zip - 39.png`,
+    `${assetsPath}/hair/longo-cacheado/0.png`,
+    `${assetsPath}/hair/longo-cacheado/Jogo_Projeto .zip - 26.png`,
+    `${assetsPath}/hair/longo-cacheado/Jogo_Projeto .zip - 27.png`,
+    `${assetsPath}/hair/longo-cacheado/Jogo_Projeto .zip - 28.png`,
+    `${assetsPath}/hair/longo-cacheado/Jogo_Projeto .zip - 29.png`,
+    `${assetsPath}/hair/longo-liso/Jogo_Projeto .zip - 16.png`,
+    `${assetsPath}/hair/longo-liso/Jogo_Projeto .zip - 17.png`,
+    `${assetsPath}/hair/longo-liso/Jogo_Projeto .zip - 18.png`,
+    `${assetsPath}/hair/longo-liso/Jogo_Projeto .zip - 19.png`,
+    `${assetsPath}/hair/longo-liso/Jogo_Projeto .zip - 20.png`,
+    `${assetsPath}/hair/longo-ondulado/Jogo_Projeto .zip - 21.png`,
+    `${assetsPath}/hair/longo-ondulado/Jogo_Projeto .zip - 22.png`,
+    `${assetsPath}/hair/longo-ondulado/Jogo_Projeto .zip - 23.png`,
+    `${assetsPath}/hair/longo-ondulado/Jogo_Projeto .zip - 24.png`,
+    `${assetsPath}/hair/longo-ondulado/Jogo_Projeto .zip - 25.png`,
   ];
+
+  const guardaRoupaCabelo = [
+    `${assetsPath}/hair/curto-liso/Jogo_Projeto .zip - 31.png`,
+    `${assetsPath}/hair/curto-liso/hair-red.png`,
+    `${assetsPath}/hair/curto-liso/Jogo_Projeto .zip - 33.png`,
+    `${assetsPath}/hair/curto-liso/Jogo_Projeto .zip - 34.png`,
+    `${assetsPath}/hair/curto-liso/Jogo_Projeto .zip - 35.png`,
+    `${assetsPath}/hair/curto-cacheado/Jogo_Projeto .zip - 36.png`,
+    `${assetsPath}/hair/curto-cacheado/Jogo_Projeto .zip - 37.png`,
+    `${assetsPath}/hair/curto-cacheado/Jogo_Projeto .zip - 38.png`,
+    `${assetsPath}/hair/curto-cacheado/Jogo_Projeto .zip - 39.png`,
+    `${assetsPath}/hair/curto-cacheado/Jogo_Projeto .zip - 40.png`,
+
+  ]
 
   const guardaRoupaPaints = [
     `${assetsPath}/pants/0.png`,
@@ -61,15 +73,14 @@ const Game = () => {
     `${assetsPath}/pants/Jogo_Projeto .zip - 15.png`,
   ];
   const guardaRoupaShirts = [
-    `${assetsPath}/shirsts/0.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 1.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 2.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 3(1).png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 4.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 6.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 8.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 9.png`,
-    `${assetsPath}/shirsts/Jogo_Projeto .zip - 10.png`,
+    `${assetsPath}/shirsts/dress/0.png`,
+    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 1.png`,
+    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 2.png`,
+    `${assetsPath}/shirsts/dress/dressRed.png`,
+    `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 6.png`,
+    `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 8.png`,
+    `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 9.png`,
+    `${assetsPath}/shirsts/shirt/shirtBlue.png`,
   ];
 
 
@@ -85,44 +96,98 @@ const Game = () => {
     setClothesVisible(false);
   };
 
+  const [itemsPaint, setItemsPaint] = useState({ paint: "" });
+  const [itemshairCurtoCacheado, setItemsHairCurtoCacheado] = useState({ hairCurtoCacheado: "" });
+  const [itemshairCurtoLiso, setItemsHairCurtoLiso] = useState({ hairCurtoLiso: "" });
+  const [itemshairLongoCacheado, setItemsHairLongoCacheado] = useState({ hairLongoCacheado: "" });
+  const [itemshairLongoOndulado, setItemsHairLongoOndulado] = useState({ hairLongoOndulado: "" });
+  const [itemshairLongoLiso, setItemsHairLongoLiso] = useState({ hairLongoLiso: "" });
+  const [itemsShirt, setItemsShirt] = useState({ shirt: "" });
+  const [itemsDress, setItemsDress] = useState({ dress: "" });
+  const [expressaoAtual, setExpressaoAtual] = useState("");
+  const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
+
+
   return (
     <div className="Game">
-      <header className="Game-header">
+      <header className="Game-header" >
+        <img src={fundos.praia} alt="img do boneco" className="img-fundo"
+        />
         <main className={`game-main ${isClothesVisible ? "show" : ""}`}>
-          <section className="expressions">
-            <ul className="ul-expressions">
-              <li className="alegria">  <img src={esprecoesItens.alegria} className="boneco-img" alt="img do boneco" /></li>
-              <li className="medo">  <img src={esprecoesItens.medo} className="boneco-img" alt="img do boneco" /></li>
-              <li className="raiva">  <img src={esprecoesItens.raiva} className="boneco-img" alt="img do boneco" /></li>
-              <li className="nojo">  <img src={esprecoesItens.nojo} className="boneco-img" alt="img do boneco" /></li>
-              <li className="tristeza">  <img src={esprecoesItens.tristeza} className="boneco-img" alt="img do boneco" /></li>
-            </ul>
-          </section>
-
           <section className="doll">
             <div className="bonecoMainTest">
               <img src={items.boneco} className="boneco-img" alt="img do boneco" />
             </div>
-            <div className="hairMainTest">
-              <img src={items.main} className="hair-img" alt="img do cabelo" />
-            </div>
-            <div className="shirtrMainTest">
-              <img src={items.shirtMain} className="shirt-img" alt="img do blusa" />
-            </div>
-            <div className="esprecaoMainTest">
-              <img src={items.esprecoes} className="esprecao-img" alt="img da espreções" />
-            </div>
+            {itemshairCurtoCacheado.hairCurtoCacheado && (
+              <div className="hairMainTest">
+                <img src={itemshairCurtoCacheado.hairCurtoCacheado} className="roupa hair-curto-cacheado-img" alt="img do cabelo" />
+              </div>
+            )}
+            {itemshairCurtoLiso.hairCurtoLiso && (
+              <div className="hairMainTest">
+                <img src={itemshairCurtoLiso.hairCurtoLiso} className="roupa hair-curto-liso-img" alt="img do cabelo" />
+              </div>
+            )}
+            {itemshairLongoCacheado.hairLongoCacheado && (
+              <div className="hairMainTest">
+                <img src={itemshairLongoCacheado.hairLongoCacheado} className="roupa hair-longo-cacheado-img" alt="img do cabelo" />
+              </div>
+            )}
+            {itemshairLongoOndulado.hairLongoLiso && (
+              <div className="hairMainTest">
+                <img src={itemshairLongoOndulado.hairLongoLiso} className="roupa hair-longo-ondulado-img" alt="img do cabelo" />
+              </div>
+            )}
+            {itemshairLongoLiso.hairLongoLiso && (
+              <div className="hairMainTest">
+                <img src={itemshairLongoLiso.hairLongoLiso} className="roupa hair-longo-liso-img" alt="img do cabelo" />
+              </div>
+            )}
+
+            {itemsShirt.shirt && (
+              <div className="shirtrMainTest">
+                <img src={itemsShirt.shirt} className="roupa shirt-img" alt="img do blusa" />
+              </div>
+            )}
+            {itemsDress.dress && (
+              <div className="shirtrMainTest">
+                <img src={itemsDress.dress} className="roupa dress-img" alt="img do blusa" />
+              </div>
+            )}
+
+            {itemsPaint.paint && (
+              <div className="paintTest">
+                <img src={itemsPaint.paint} className="roupa calca-img" alt="img da calça" />
+              </div>
+            )}
+            {itemsEsprecoes.esprecoes && (
+              <div className="expressao-wrapper">
+                <img
+                  src={itemsEsprecoes.esprecoes}
+                  className={`esprecao-img esprecao-img-${expressaoAtual}`}
+                  alt={`Expressão ${expressaoAtual}`}
+                  onError={(e) => {
+                    console.error("Erro ao carregar expressão:", itemsEsprecoes.esprecoes);
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+
+
+
           </section>
 
           <aside className="clothes">
             <h4>Escolha seu personagem</h4>
             <ul>
               {Object.entries(items)
-                .filter(([key]) => key !== "boneco") // Evita listar o boneco
+                .filter(([key]) => ["paints", "shirtMain", "hairMain", "hairGirl", "esprecao"].includes(key)) // Evita listar o boneco
                 .map(([key, src]) => (
                   <React.Fragment key={key}>
-                    <li onClick={() => handleClick(key)}>
+                    <li onClick={() => handleClick(key)} >
                       <img src={src} className={`${key}-img`} alt={`img ${key}`} />
+
                     </li>
                     <hr />
                   </React.Fragment>
@@ -134,36 +199,59 @@ const Game = () => {
             <Wardrobe
               selectedItem={selectedItem}
               guardaRoupa={guardaRoupa}
+              guardaRoupaCabelo={guardaRoupaCabelo}
               guardaRoupaPaints={guardaRoupaPaints}
               guardaRoupaShirts={guardaRoupaShirts}
+              esprecoesItens={esprecoesItens}
+              setItemsPaint={setItemsPaint}
+              setItemsHairCurtoCacheado={setItemsHairCurtoCacheado}
+              setItemsHairCurtoLiso={setItemsHairCurtoLiso}
+              setItemsHairLongoCacheado={setItemsHairLongoCacheado}
+              setItemsHairLongoOndulado={setItemsHairLongoOndulado}
+              setItemsHairLongoLiso={setItemsHairLongoLiso}
+              setItemsShirt={setItemsShirt}
+              setItemsDress={setItemsDress}
+              setItemsEsprecoes={setItemsEsprecoes}
+              setExpressaoAtual={setExpressaoAtual}
               onClose={closeWardrobe}
             />
           )}
         </main>
       </header>
-    </div>
+    </div >
   );
 };
 
 // **Componente para a guarda-roupa**
-const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaPaints, guardaRoupaShirts, onClose }) => {
+// **Componente para a guarda-roupa**
+const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints,
+  guardaRoupaShirts, setItemsPaint, setItemsHairCurtoCacheado, setItemsHairCurtoLiso,
+  setItemsHairLongoCacheado, setItemsHairLongoOndulado, setItemsHairLongoLiso, setItemsEsprecoes,
+  setItemsShirt, setItemsDress, esprecoesItens, setExpressaoAtual, onClose }) => {
   const titles = {
     cabeca: "Escolha a cabeça",
     hairMain: "Escolha o cabelo dele",
     hairGirl: "Escolha o cabelo dela",
     shirt: "Escolha a camiseta",
     paints: "Escolha a calça",
+    esprecao: "Escolha a expressão",
   };
 
   let wardrobeItems = [];
 
-  if (selectedItem === "shirt") {
+  if (selectedItem === "shirtMain") {
     wardrobeItems = guardaRoupaShirts;
   } else if (selectedItem === "paints") {
     wardrobeItems = guardaRoupaPaints;
-  } else {
+  } else if (selectedItem === "hairGirl") {
     wardrobeItems = guardaRoupa;
+  } else if (selectedItem === "hairMain") {
+    wardrobeItems = guardaRoupaCabelo;
+  } else if (selectedItem === 'esprecao') {
+    wardrobeItems = esprecoesItens; // Aqui você já usa a prop recebida
   }
+
+
 
   return (
     <div className="guarda-roupa" style={{ display: "flex" }}>
@@ -171,15 +259,86 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaPaints, guardaRoupaShi
         <h4>{titles[selectedItem]}</h4>
       </div>
       <div className="containerImags">
-        {wardrobeItems.map((item, index) => (
-          <img
-            key={index}
-            src={item}
-            className="img-clothes"
-            alt={`${titles[selectedItem]} ${index}`}
-            onClick={onClose}
-          />
-        ))}
+        {wardrobeItems.map((item, index) => {
+          // Verifica se o item é uma string (caso antigo) ou objeto (novo formato)
+          const imageSrc = typeof item === 'string' ? item : item.src;
+          const className = typeof item === 'string' ? '' : item.className || '';
+
+          return (
+            <div
+              key={index}
+              className={`img-container ${className}`}  // Adiciona a classe da expressão
+              onClick={() => {
+                if (imageSrc.startsWith("/assets/pants/")) {
+                  setItemsPaint({ paint: imageSrc });
+                  setItemsDress({ dress: "" });
+                }
+                else if (imageSrc.startsWith("/assets/hair/curto-cacheado")) {
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: imageSrc });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  setItemsHairLongoLiso({ hairLongoLiso: "" });
+                }
+                else if (imageSrc.startsWith("/assets/hair/curto-liso")) {
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: imageSrc });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  setItemsHairLongoLiso({ hairLongoLiso: "" });
+                }
+                else if (imageSrc.startsWith("/assets/hair/longo-cacheado")) {
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: imageSrc });
+                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  setItemsHairLongoLiso({ hairLongoLiso: "" });
+                }
+                else if (imageSrc.startsWith("/assets/hair/longo-ondulado")) {
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                  setItemsHairLongoOndulado({ hairLongoOndulado: imageSrc });
+                  setItemsHairLongoLiso({ hairLongoLiso: "" });
+                }
+                else if (imageSrc.startsWith("/assets/hair/longo-liso")) {
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  setItemsHairLongoLiso({ hairLongoLiso: imageSrc });
+                }
+                else if (imageSrc.startsWith("/assets/shirsts/shirt/")) {
+                  setItemsShirt({ shirt: imageSrc });
+                  setItemsDress({ dress: "" });
+                }
+                else if (imageSrc.startsWith("/assets/shirsts/dress/")) {
+                  setItemsShirt({ shirt: "" });
+                  setItemsPaint({ paint: "" });
+                  setItemsDress({ dress: imageSrc });
+                }
+                else if (imageSrc.startsWith("/assets/esprecoes/")) {
+                  // Extrai o nome da emoção do caminho da imagem
+                  const nomeExpressao = imageSrc.split('/').pop().replace('.png', '').toLowerCase();
+                  setItemsEsprecoes({ esprecoes: imageSrc });
+                  setExpressaoAtual(nomeExpressao);
+                }
+                console.log("Imagem clicada:", imageSrc);
+                onClose();
+              }}
+            >
+              <img
+                src={imageSrc}
+                className="img-clothes"
+                alt={`${titles[selectedItem]} ${index}`}
+                onError={(e) => {
+                  console.error("Erro ao carregar imagem:", imageSrc);
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
