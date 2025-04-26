@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import Game from './componente/game/game';
+import Hambiente from './componente/hambiente/page-hambiente';
+import Home from './componente/home/home';
+import { useState } from 'react';
 
 function App() {
+  const [screen, setScreen] = useState('home'); // agora controla 3 telas: home, hambiente, game
+  const [selectedFundo, setSelectedFundo] = useState(null);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {screen === 'home' && <Home onNavigate={() => setScreen('hambiente')} />}
+      {screen === 'hambiente' && (
+        <Hambiente 
+          onNavigateToGame={(selectedImage) => {
+            setSelectedFundo(selectedImage);
+            setScreen('game');
+          }}
+        />
+      )}
+      {screen === 'game' && (
+        <Game
+          fundoSelecionado={selectedFundo}
+          onNavigateBack={() => setScreen('home')}
+        />
+      )}
     </div>
   );
 }

@@ -1,18 +1,9 @@
 import "./games.css";
 import React, { useState } from "react";
+import { useEffect } from 'react';
 
-const Game = () => {
+export default function Game({ fundoSelecionado, onNavigateBack  }) {
   const assetsPath = process.env.PUBLIC_URL + "/assets";
-
-  const fundos = {
-    banheiro: `${assetsPath}/fundo/banheiro.jpg`,
-    cozinha: `${assetsPath}/fundo/cozinha.jpg`,
-    escola: `${assetsPath}/fundo/escola.jpg`,
-    parque: `${assetsPath}/fundo/parque.jpg`,
-    praia: `${assetsPath}/fundo/praia.jpg`,
-    quarto: `${assetsPath}/fundo/quarto.jpg`,
-    sala: `${assetsPath}/fundo/SALA.jpg`,
-  };
 
   const items = {
     cabeca: `${assetsPath}/faces/cabeca.png`,
@@ -28,9 +19,9 @@ const Game = () => {
   const esprecoesItens = [
     { src: `${assetsPath}/esprecoes/alegria.png`, className: "alegria" },
     { src: `${assetsPath}/esprecoes/raiva.png`, className: "raiva" },
-    { src: `${assetsPath}/esprecoes/noj.png`, className: "nojo" },
+    { src: `${assetsPath}/esprecoes/nojo.png`, className: "nojo" },
     { src: `${assetsPath}/esprecoes/medo.png`, className: "medo" },
-    { src: `${assetsPath}/esprecoes/Jogo_Projeto .zip - 43.png`, className: "tristeza" },
+    { src: `${assetsPath}/esprecoes/tristeza.png`, className: "tristeza" },
   ];
 
   const guardaRoupa = [
@@ -92,6 +83,7 @@ const Game = () => {
     setClothesVisible(true);
   };
 
+
   const closeWardrobe = () => {
     setClothesVisible(false);
   };
@@ -107,39 +99,54 @@ const Game = () => {
   const [expressaoAtual, setExpressaoAtual] = useState("");
   const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
 
+  // 1. Adicione os estados necessários no topo do componente
+  const [isAsideOpen, setIsAsideOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  // 2. Efeito para detectar tamanho de tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    // Verifica imediatamente e adiciona listener
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
 
   return (
     <div className="Game">
       <header className="Game-header" >
-        <img src={fundos.praia} alt="img do boneco" className="img-fundo"
-        />
+      <img src={fundoSelecionado} alt="Fundo selecionado" className="img-fundo"/>
         <main className={`game-main ${isClothesVisible ? "show" : ""}`}>
           <section className="doll">
             <div className="bonecoMainTest">
               <img src={items.boneco} className="boneco-img" alt="img do boneco" />
             </div>
             {itemshairCurtoCacheado.hairCurtoCacheado && (
-              <div className="hairMainTest">
+              <div className="vestivel item-topo">
                 <img src={itemshairCurtoCacheado.hairCurtoCacheado} className="roupa hair-curto-cacheado-img" alt="img do cabelo" />
               </div>
             )}
             {itemshairCurtoLiso.hairCurtoLiso && (
-              <div className="hairMainTest">
+              <div className="vestivel item-topo">
                 <img src={itemshairCurtoLiso.hairCurtoLiso} className="roupa hair-curto-liso-img" alt="img do cabelo" />
               </div>
             )}
             {itemshairLongoCacheado.hairLongoCacheado && (
-              <div className="hairMainTest">
+              <div className="vestivel item-topo">
                 <img src={itemshairLongoCacheado.hairLongoCacheado} className="roupa hair-longo-cacheado-img" alt="img do cabelo" />
               </div>
             )}
-            {itemshairLongoOndulado.hairLongoLiso && (
-              <div className="hairMainTest">
-                <img src={itemshairLongoOndulado.hairLongoLiso} className="roupa hair-longo-ondulado-img" alt="img do cabelo" />
+            {itemshairLongoOndulado.hairLongoOndulado && (
+              <div className="vestivel item-topo">
+                <img src={itemshairLongoOndulado.hairLongoOndulado} className="roupa hair-longo-ondulado-img" alt="img do cabelo" />
               </div>
             )}
             {itemshairLongoLiso.hairLongoLiso && (
-              <div className="hairMainTest">
+              <div className="vestivel item-topo">
                 <img src={itemshairLongoLiso.hairLongoLiso} className="roupa hair-longo-liso-img" alt="img do cabelo" />
               </div>
             )}
@@ -178,16 +185,36 @@ const Game = () => {
 
           </section>
 
-          <aside className="clothes">
+          <aside
+            className={`clothes ${isClothesVisible ? "show" : ""}`}
+            style={
+              isMobile ? {
+                top: isAsideOpen ? '68%' : '88%',
+                height: isAsideOpen ? '30%' : '100%',
+              } : undefined // Mantém undefined para desktop (usa o CSS padrão)
+            }
+          >
+            {/* Ícone de chevron - só mostra em mobile */}
+            {isMobile && (
+              <i
+                className={`fa-solid fa-chevron-up ${isAsideOpen ? 'open' : ''}`}
+                onClick={() => setIsAsideOpen(!isAsideOpen)}
+                style={{
+                  transition: 'transform 0.3s ease',
+                  transform: isAsideOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              />
+            )}
+
+
             <h4>Escolha seu personagem</h4>
             <ul>
               {Object.entries(items)
-                .filter(([key]) => ["paints", "shirtMain", "hairMain", "hairGirl", "esprecao"].includes(key)) // Evita listar o boneco
+                .filter(([key]) => ["paints", "shirtMain", "hairMain", "hairGirl", "esprecao"].includes(key))
                 .map(([key, src]) => (
                   <React.Fragment key={key}>
-                    <li onClick={() => handleClick(key)} >
+                    <li onClick={() => handleClick(key)}>
                       <img src={src} className={`${key}-img`} alt={`img ${key}`} />
-
                     </li>
                     <hr />
                   </React.Fragment>
@@ -342,6 +369,5 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
       </div>
     </div>
   );
-};
 
-export default Game;
+};

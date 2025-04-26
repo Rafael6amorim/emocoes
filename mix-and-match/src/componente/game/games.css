@@ -7,39 +7,29 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-  }
-  
-  .img-fundo {
+}
+
+.img-fundo {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* cobre toda a área sem distorcer */
+    object-fit: cover;
+    /* cobre toda a área sem distorcer */
     z-index: 0;
-  }
-  
-  .game-main {
-    position: relative; /* necessário pra o z-index funcionar */
-    z-index: 10; /* maior que o fundo */
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 30% 50% 20%;
-    grid-template-rows: 20% 60% 20%;
-    grid-template-areas: 
-      ". . clothes"
-      ". . clothes"
-      ". . clothes";
-      z-index: 100;
-  }
-  
-
-.game-main.show {
-    grid-template-columns: 60% 10% 30%;
-    grid-template-areas: ". clothes guarda-roupa"
-        "doll  clothes guarda-roupa"
-        ".  clothes guarda-roupa";
 }
+
+.game-main {
+    position: relative;
+    /* necessário pra o z-index funcionar */
+    z-index: 10;
+    /* maior que o fundo */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
 
 .expressions {
     grid-area: expressions;
@@ -48,19 +38,25 @@
 }
 
 .doll {
-    grid-area: doll;
-    position: absolute;
-    top: 33%;
-    right: 41%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 aside {
-    grid-area: clothes;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
     border: 1px solid black;
     overflow-x: hidden;
     background-color: #EEDFB4;
+    z-index: 11;
 }
 
+aside.show {
+    right: 345px;
+}
 
 
 ul {
@@ -132,24 +128,49 @@ ul li img {
 .tristeza {
     background-color: #1190b8;
 }
-.img-container{
+
+.img-container {
     margin: 10px;
 }
 
 .guarda-roupa {
     background-color: #EEDFB4;
-    grid-area: guarda-roupa;
+    position: absolute;
     display: none;
+    /* Inicialmente escondido */
     border: 1px solid black;
-    overflow: hidden;
     flex-direction: column;
+    z-index: 100;
+    width: 30%;
+    /* Mudei de max-width para width */
+    right: 0;
+    top: 0;
+    bottom: 0;
+    /* Ocupa a altura total */
+    overflow: hidden;
+    /* Importante para o container principal */
+}
+
+/* Quando o guarda-roupa estiver visível */
+.guarda-roupa.show {
+    display: flex;
+    /* Mostra como flex */
 }
 
 .containerImags {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    overflow: auto;
+    overflow-y: auto;
+    /* Só vertical */
+    overflow-x: hidden;
+    /* Evita scroll horizontal */
+    height: 100%;
+    /* Ocupa toda altura disponível */
+    padding: 10px;
+    /* Espaçamento interno */
+    gap: 8px;
+    /* Espaço entre itens */
 }
 
 .img-clothes {
@@ -169,6 +190,7 @@ ul li img {
 .containerTitle {
     text-align: center;
 }
+
 .doll .boneco-img {
     width: 300px;
     height: 500px;
@@ -197,7 +219,7 @@ ul li img {
 
 
 /* Cabelo curto liso masculino */
-.hair-curto-liso-img{
+.hair-curto-liso-img {
     width: 110px;
     position: absolute;
     top: 33.6%;
@@ -213,12 +235,12 @@ ul li img {
 }
 
 /* vestido */
-.dress-img{
-    width: 485px;
-    height: 200px;
+.dress-img {
+    width: 600px;
+    height: 250px;
     position: absolute;
-    top: 42.7%;
-    right: 43.4%;
+    top: 43%;
+    right: 27%;
     z-index: 10;
 }
 
@@ -244,82 +266,219 @@ ul li img {
     position: absolute;
     object-fit: contain;
     transition: all 0.3s ease;
-  }
-  
-  /* Posicionamentos específicos */
-  .esprecao-img-alegria {
+}
+
+/* Posicionamentos específicos */
+.esprecao-img-alegria {
     width: 100px;
     top: 36%;
     right: 56.5%;
-  }
-  
-  .esprecao-img-medo,
-  .esprecao-img-tristeza {
+}
+
+.esprecao-img-medo,
+.esprecao-img-tristeza {
     width: 90px;
     top: 36%;
     right: 57%;
-  }
-  
-  .esprecao-img-nojo {
+}
+
+.esprecao-img-nojo {
     width: 100px;
     top: 37%;
     right: 56.5%;
     z-index: 12;
-  }
-  
-  .esprecao-img-raiva {
+}
+
+.esprecao-img-raiva {
     width: 90px;
     top: 37%;
     right: 56.9%;
     z-index: 12;
-  }
-  
-  /* Container para posicionamento relativo */
-  .expressao-wrapper {
+}
+.fa-chevron-up{
+    display: none;
+}
+
+/* Container para posicionamento relativo */
+/* .expressao-wrapper {
     position: relative;
     width: 0;
     height: 0;
-  }
+} */
 
-@media(max-width:767px){
-    .game-main {
-        height: 100vh;
-        grid-template-columns: 30% 50% 20%;
-        grid-template-rows: 20% 60% 20%;
-        grid-template-areas: "expressions expressions expressions"
-            "doll doll doll"
-            "clothes clothes clothes";
+@media(max-width:767px) {
+    .fa-chevron-up{
+        display: flex;
+        justify-content: center;
+        font-size: 25px;
     }
-    .img-fundo {
-        height: 90%;
-      }
-    .clothes h4{
+    h4{
+        margin-top: 0;
         text-align: center;
     }
-    .clothes ul {
+    aside{
+        width: 100%;
+        overflow: auto;
+    }
+    aside.show{ 
+        top: 20% !important;
+        height: 30%;
+        width: 100% ;
+        right: 0% !important;
+        overflow: scroll;
+    }
+    ul {
         flex-direction: row;
     }
-    
-    .game-main.show {
-        grid-template-columns: 60% 10% 30%;
-        grid-template-rows: 20% 20% 60%;
-        grid-template-areas: "expressions expressions expressions"
-            "clothes clothes clothes"
-            "guarda-roupa  guarda-roupa guarda-roupa";
+    .guarda-roupa{
+        top: 50%;
+        width: 100%;
     }
 
-    
-    .clothes{
-        background-color: bisque;
-        z-index: 100;
-    }
-    .guarda-roupa{
-        background-color: bisque;
-        z-index: 100;
-    }
-    .ul-expressions li {
-        width: 70px;
-        height: 70px;
-    }
 }
-  
+
+@media(max-width:1150px) {
+    .Game {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+
+    .doll {
+        position: fixed;
+        width: 400px;
+        height: 700px;
+        left: 50%;
+        bottom: 60px;
+        transform: translateX(-50%);
+        /* Centraliza horizontalmente */
+        z-index: 10;
+    }
+
+    .doll .boneco-img {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    aside.show {
+        right: 243px;
+    }
+
+    /* Classe base para todos os itens vestíveis */
+    /* Exemplos específicos com medidas proporcionais */
+    .hair-longo-liso-img {
+        position: absolute;
+        width: 162.5%;
+        height: 40%;
+        /* 650/400 */
+        top: 15%;
+        left: 40%;
+        transform: translateX(-50%);
+        z-index: 11;
+    }
+
+    .hair-longo-cacheado-img {
+        position: absolute;
+        width: 147.5%;
+        /* 750/400 */
+        top: 0%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 11;
+    }
+
+    .hair-curto-cacheado-img,
+    .hair-curto-liso-img {
+        position: absolute;
+        width: 62.5%;
+        /* 250/400 */
+        top: 12.5%;
+        left: 50.5%;
+        transform: translateX(-50%);
+        z-index: 11;
+    }
+
+    .hair-longo-ondulado-img {
+        position: absolute;
+        width: 147%;
+        /* 750/400 */
+        top: 14%;
+        left: 52%;
+        transform: translateX(-50%);
+        z-index: 11;
+    }
+
+    .dress-img {
+        width: 185%;
+        /* 740/400 */
+        top: 35%;
+        left: 54%;
+        transform: translateX(-50%);
+    }
+
+    .shirt-img {
+        width: 162.5%;
+        /* 650/400 */
+        top: 28%;
+        left: 57%;
+        transform: translateX(-50%);
+    }
+
+    .calca-img {
+        width: 187.5%;
+        height: 40%;
+        /* 750/400 */
+        top: 50%;
+        left: 55%;
+        transform: translateX(-50%);
+        z-index: 3;
+    }
+
+
+    .esprecao-img {
+        position: absolute;
+        pointer-events: none;
+        z-index: 10;
+        /* Acima do rosto, abaixo de cabelos */
+    }
+
+    /* Expressão alegria - convertida */
+    .esprecao-img-alegria {
+        width: 57%;
+        top: 20%;
+        left: 60%;
+        transform: translateX(-50%) translateX(-18%);
+    }
+
+    /* Expressões menores (medo, tristeza) */
+    .esprecao-img-medo,
+    .esprecao-img-tristeza {
+        width: 52.5%;
+        top: 20%;
+        left: 58%;
+        transform: translateX(-50%) translateX(-17.5%);
+    }
+
+    /* Expressão nojo */
+    .esprecao-img-nojo {
+        width: 52.5%;
+        top: 22%;
+        left: 59%;
+        transform: translateX(-50%) translateX(-17.5%);
+    }
+
+    /* Expressão raiva */
+    .esprecao-img-raiva {
+        width: 52.5%;
+        top: 20%;
+        left: 59%;
+        transform: translateX(-50%) translateX(-17.2%);
+    }
+
+
+
+}

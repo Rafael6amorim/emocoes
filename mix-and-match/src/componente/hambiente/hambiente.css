@@ -1,0 +1,80 @@
+/* hambiente.css */
+
+.hambiente {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    font-family: 'Poppins', sans-serif;
+}
+
+.container-hambiente {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 90%;
+}
+
+.title-hambiente {
+    font-size: 3rem;
+    color: #4f46e5;
+    animation: swing 2s infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes swing {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.subtitle-hambiente {
+    font-size: 1.5rem;
+    color: #334e68;
+    margin-bottom: 2rem;
+}
+
+.background-list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+}
+
+.background-item {
+    margin: 5px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 350px;
+    height: auto;
+}
+
+.background-item:hover {
+    transform: translateY(-5px);
+}
+
+.background-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.background-name {
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #475569;
+    text-transform: capitalize;
+}
