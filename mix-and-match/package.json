@@ -2,7 +2,7 @@
   "name": "mix-and-match",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rafael6amorim.github.io/game-mix-and-match/",
+  "homepage": "https://Rafael6amorim.github.io/game-mix-and-match/",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
