@@ -2,7 +2,8 @@ import "./games.css";
 import React, { useState } from "react";
 import { useEffect } from 'react';
 
-export default function Game({ fundoSelecionado, onNavigateBack  }) {
+export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack }) {
+
   const assetsPath = process.env.PUBLIC_URL + "/assets";
 
   const items = {
@@ -10,9 +11,9 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
     hairGirl: `${assetsPath}/hair/girl-hear-principal.png`,
     hairMain: `${assetsPath}/hair/main-hear.png`,
     shirtMain: `${assetsPath}/shirsts/shirt-principal.png`,
+    dressMain: `${assetsPath}/shirsts/dress-principal.png`,
     paints: `${assetsPath}/pants/pant-principal.png`,
-    boneco: `${assetsPath}/bonecos/boneco2.png`,
-    esprecao: `${assetsPath}/esprecoes/alegria.png`,
+    esprecao: `${assetsPath}/esprecoes/aleggriaMain.png`,
   };
 
 
@@ -64,19 +65,25 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
     `${assetsPath}/pants/Jogo_Projeto .zip - 15.png`,
   ];
   const guardaRoupaShirts = [
-    `${assetsPath}/shirsts/dress/0.png`,
-    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 1.png`,
-    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 2.png`,
-    `${assetsPath}/shirsts/dress/dressRed.png`,
+
     `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 6.png`,
     `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 8.png`,
     `${assetsPath}/shirsts/shirt/Jogo_Projeto .zip - 9.png`,
     `${assetsPath}/shirsts/shirt/shirtBlue.png`,
+    `${assetsPath}/shirsts/shirt/shirtgreen.png`,
   ];
+
+  const guardaRoupaDress = [
+    `${assetsPath}/shirsts/dress/0.png`,
+    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 1.png`,
+    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 2.png`,
+    `${assetsPath}/shirsts/dress/dressRed.png`,
+  ]
 
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [isClothesVisible, setClothesVisible] = useState(false);
+
 
   const handleClick = (itemKey) => {
     setSelectedItem(itemKey);
@@ -98,17 +105,15 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
   const [itemsDress, setItemsDress] = useState({ dress: "" });
   const [expressaoAtual, setExpressaoAtual] = useState("");
   const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
-
-  // 1. Adicione os estados necessários no topo do componente
   const [isAsideOpen, setIsAsideOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  // 2. Efeito para detectar tamanho de tela
+
+
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth <= 767);
     };
 
-    // Verifica imediatamente e adiciona listener
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
 
@@ -119,12 +124,21 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
   return (
     <div className="Game">
       <header className="Game-header" >
-      <img src={fundoSelecionado} alt="Fundo selecionado" className="img-fundo"/>
+        <img src={fundoSelecionado} alt="Fundo selecionado" className="img-fundo" />
         <main className={`game-main ${isClothesVisible ? "show" : ""}`}>
           <section className="doll">
-            <div className="bonecoMainTest">
-              <img src={items.boneco} className="boneco-img" alt="img do boneco" />
-            </div>
+
+            <div
+              className="boneco-img"
+              style={{
+                WebkitMaskImage: `url(${BonecoSelecionado})`,
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskSize: "contain",
+                backgroundColor: skinColor,
+              }}
+            ></div>
+
+
             {itemshairCurtoCacheado.hairCurtoCacheado && (
               <div className="vestivel item-topo">
                 <img src={itemshairCurtoCacheado.hairCurtoCacheado} className="roupa hair-curto-cacheado-img" alt="img do cabelo" />
@@ -181,9 +195,9 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
               </div>
             )}
 
-
-
           </section>
+
+
 
           <aside
             className={`clothes ${isClothesVisible ? "show" : ""}`}
@@ -194,23 +208,31 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
               } : undefined // Mantém undefined para desktop (usa o CSS padrão)
             }
           >
-            {/* Ícone de chevron - só mostra em mobile */}
             {isMobile && (
-              <i
-                className={`fa-solid fa-chevron-up ${isAsideOpen ? 'open' : ''}`}
-                onClick={() => setIsAsideOpen(!isAsideOpen)}
-                style={{
-                  transition: 'transform 0.3s ease',
-                  transform: isAsideOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              <div
+                className="icon"
+                onClick={() => {
+                  setIsAsideOpen((prev) => !prev);
                 }}
-              />
+              >
+                <i
+                  className="fa-solid fa-chevron-up"
+                  style={{
+                    transition: 'transform 0.3s ease',
+                    transform: isAsideOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    display: 'inline-block', 
+                  }}
+                />
+
+
+              </div>
             )}
 
 
-            <h4>Escolha seu personagem</h4>
+            <h4>Monte seu personagem</h4>
             <ul>
               {Object.entries(items)
-                .filter(([key]) => ["paints", "shirtMain", "hairMain", "hairGirl", "esprecao"].includes(key))
+                .filter(([key]) => ["paints", "shirtMain", "hairMain", "hairGirl", "esprecao", "dressMain"].includes(key))
                 .map(([key, src]) => (
                   <React.Fragment key={key}>
                     <li onClick={() => handleClick(key)}>
@@ -229,6 +251,7 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
               guardaRoupaCabelo={guardaRoupaCabelo}
               guardaRoupaPaints={guardaRoupaPaints}
               guardaRoupaShirts={guardaRoupaShirts}
+              guardaRoupaDress={guardaRoupaDress}
               esprecoesItens={esprecoesItens}
               setItemsPaint={setItemsPaint}
               setItemsHairCurtoCacheado={setItemsHairCurtoCacheado}
@@ -243,23 +266,23 @@ export default function Game({ fundoSelecionado, onNavigateBack  }) {
               onClose={closeWardrobe}
             />
           )}
+
+          <button onClick={onNavigateBack} className="button-voltar">Voltar</button>
         </main>
       </header>
     </div >
   );
 };
 
-// **Componente para a guarda-roupa**
-// **Componente para a guarda-roupa**
-const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints,
+const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
   guardaRoupaShirts, setItemsPaint, setItemsHairCurtoCacheado, setItemsHairCurtoLiso,
   setItemsHairLongoCacheado, setItemsHairLongoOndulado, setItemsHairLongoLiso, setItemsEsprecoes,
   setItemsShirt, setItemsDress, esprecoesItens, setExpressaoAtual, onClose }) => {
   const titles = {
-    cabeca: "Escolha a cabeça",
-    hairMain: "Escolha o cabelo dele",
-    hairGirl: "Escolha o cabelo dela",
-    shirt: "Escolha a camiseta",
+    hairMain: "Escolha o cabelo",
+    hairGirl: "Escolha o cabelo",
+    shirtMain: "Escolha a camiseta",
+    dressMain: "Escolha o vestido",
     paints: "Escolha a calça",
     esprecao: "Escolha a expressão",
   };
@@ -275,7 +298,9 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
   } else if (selectedItem === "hairMain") {
     wardrobeItems = guardaRoupaCabelo;
   } else if (selectedItem === 'esprecao') {
-    wardrobeItems = esprecoesItens; // Aqui você já usa a prop recebida
+    wardrobeItems = esprecoesItens;
+  } else if (selectedItem === 'dressMain') {
+    wardrobeItems = guardaRoupaDress;
   }
 
 

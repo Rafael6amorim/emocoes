@@ -4,25 +4,36 @@ import Home from './componente/home/home';
 import { useState } from 'react';
 
 function App() {
-  const [screen, setScreen] = useState('home'); // agora controla 3 telas: home, hambiente, game
+  const [screen, setScreen] = useState('home');
   const [selectedFundo, setSelectedFundo] = useState(null);
+  const [selectedBoneco, setSelectedBoneco] = useState(null);
+  const [selectedSkinColor, setSelectedSkinColor] = useState(null);
+
 
   return (
     <div className="App">
       {screen === 'home' && <Home onNavigate={() => setScreen('hambiente')} />}
+
       {screen === 'hambiente' && (
-        <Hambiente 
-          onNavigateToGame={(selectedImage) => {
-            setSelectedFundo(selectedImage);
+        <Hambiente
+          onNavigateToGame={(fundo, boneco, skinColor) => {
+            setSelectedFundo(fundo);
+            setSelectedBoneco(boneco);
+            setSelectedSkinColor(skinColor);
             setScreen('game');
           }}
         />
+
       )}
+
       {screen === 'game' && (
         <Game
           fundoSelecionado={selectedFundo}
-          onNavigateBack={() => setScreen('home')}
+          BonecoSelecionado={selectedBoneco}
+          skinColor={selectedSkinColor}
+          onNavigateBack={() => setScreen('hambiente')}
         />
+
       )}
     </div>
   );

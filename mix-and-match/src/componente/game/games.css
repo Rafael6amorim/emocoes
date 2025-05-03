@@ -1,5 +1,8 @@
 .Game {
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    /* position: relative; */
+    z-index: 1;
 }
 
 .Game-header {
@@ -42,6 +45,8 @@
     justify-content: center;
     align-items: flex-end;
 }
+
+
 
 aside {
     position: absolute;
@@ -191,111 +196,155 @@ ul li img {
     text-align: center;
 }
 
-.doll .boneco-img {
-    width: 300px;
-    height: 500px;
-    position: relative;
-}
-
-
-/* Cabelo longo liso feminino */
-.hair-longo-liso-img {
-    width: 300px;
-    height: 100px;
-    position: absolute;
-    top: 35%;
-    right: 51.4%;
-    z-index: 11;
-}
-
-/* Cabelo longo cacheado feminino */
-.hair-longo-cacheado-img {
-    width: 280px;
-    position: absolute;
-    top: 26.9%;
-    right: 50.8%;
-    z-index: 11;
-}
-
-
-/* Cabelo curto liso masculino */
-.hair-curto-liso-img {
-    width: 110px;
-    position: absolute;
-    top: 33.6%;
-    right: 56.3%;
-}
-
-/* Cabelo curto cacheado masculino */
-.hair-curto-cacheado-img {
-    width: 115px;
-    position: absolute;
-    top: 32%;
-    right: 56%;
-}
-
-/* vestido */
-.dress-img {
-    width: 600px;
-    height: 250px;
-    position: absolute;
-    top: 43%;
-    right: 27%;
-    z-index: 10;
-}
-
-/* blusa */
-.shirt-img {
+.doll {
+    position: fixed;
     width: 400px;
-    position: absolute;
-    top: 38.3%;
-    right: 46.2%;
+    height: 700px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    /* Centraliza horizontalmente */
     z-index: 10;
 }
 
-/* Calça */
-.calca-img {
-    width: 403px;
-    position: absolute;
-    top: 50%;
-    right: 46.1%;
+.doll .boneco-img {
+    width: 100%;
+    height: 85%;
+    position: relative;
+    z-index: 1;
 }
 
-/* Classe base para todas as expressões */
+
+/* Classe base para todos os itens vestíveis */
+/* Exemplos específicos com medidas proporcionais */
+.hair-longo-liso-img {
+    position: absolute;
+    width: 142.5%;
+    height: 40%;
+    /* 650/400 */
+    top: 16%;
+    left: 40%;
+    transform: translateX(-50%);
+    z-index: 11;
+}
+
+.hair-longo-cacheado-img {
+    position: absolute;
+    width: 147.5%;
+    /* 750/400 */
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11;
+}
+
+.hair-curto-cacheado-img {
+    position: absolute;
+    width: 62.5%;
+    /* 250/400 */
+    top: 11.5%;
+    left: 51%;
+    transform: translateX(-50%);
+    z-index: 11;
+}
+
+.hair-curto-liso-img {
+    position: absolute;
+    width: 67.5%;
+    /* 250/400 */
+    top: 13.5%;
+    left: 50.5%;
+    transform: translateX(-50%);
+    z-index: 11;
+}
+
+.hair-longo-ondulado-img {
+    position: absolute;
+    width: 167%;
+    /* 750/400 */
+    top: 15%;
+    left: 53%;
+    transform: translateX(-50%);
+    z-index: 11;
+}
+
+.dress-img {
+    position: absolute;
+    width: 185%;
+    /* 740/400 */
+    top: 36%;
+    left: 53.5%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.shirt-img {
+    position: absolute;
+    width: 162.5%;
+    /* 650/400 */
+    top: 29%;
+    left: 54%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.calca-img {
+    position: absolute;
+    width: 200%;
+    height: 45%;
+    /* 750/400 */
+    top: 50%;
+    left: 55%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+
 .esprecao-img {
     position: absolute;
-    object-fit: contain;
-    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+    /* Acima do rosto, abaixo de cabelos */
 }
 
-/* Posicionamentos específicos */
+/* Expressão alegria - convertida */
 .esprecao-img-alegria {
-    width: 100px;
-    top: 36%;
-    right: 56.5%;
+    position: absolute;
+    width: 57%;
+    top: 20%;
+    left: 60%;
+    transform: translateX(-50%) translateX(-18%);
 }
 
+/* Expressões menores (medo, tristeza) */
 .esprecao-img-medo,
 .esprecao-img-tristeza {
-    width: 90px;
-    top: 36%;
-    right: 57%;
+    position: absolute;
+    width: 52.5%;
+    top: 20%;
+    left: 58%;
+    transform: translateX(-50%) translateX(-17.5%);
 }
 
+/* Expressão nojo */
 .esprecao-img-nojo {
-    width: 100px;
-    top: 37%;
-    right: 56.5%;
-    z-index: 12;
+    position: absolute;
+    width: 52.5%;
+    top: 22%;
+    left: 59%;
+    transform: translateX(-50%) translateX(-17.5%);
 }
 
+/* Expressão raiva */
 .esprecao-img-raiva {
-    width: 90px;
-    top: 37%;
-    right: 56.9%;
-    z-index: 12;
+    position: absolute;
+    width: 52.5%;
+    top: 22%;
+    left: 59%;
+    transform: translateX(-50%) translateX(-17.2%);
 }
-.fa-chevron-up{
+
+.fa-chevron-up {
     display: none;
 }
 
@@ -306,33 +355,60 @@ ul li img {
     height: 0;
 } */
 
+.button-voltar {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button-voltar:hover {
+    background-color: #4338ca;
+    transform: scale(1.05);
+}
+
 @media(max-width:767px) {
-    .fa-chevron-up{
+    .fa-chevron-up {
         display: flex;
         justify-content: center;
         font-size: 25px;
     }
-    h4{
+
+    h4 {
         margin-top: 0;
         text-align: center;
     }
-    aside{
+
+    aside {
         width: 100%;
         overflow: auto;
     }
-    aside.show{ 
+
+    aside.show {
         top: 20% !important;
         height: 30%;
-        width: 100% ;
+        width: 100%;
         right: 0% !important;
         overflow: scroll;
     }
-    ul {
-        flex-direction: row;
-    }
-    .guarda-roupa{
+
+    .guarda-roupa {
         top: 50%;
         width: 100%;
+    }
+
+    .button-voltar {
+        bottom: auto;
+        left: auto;
+        top: 10px;
+        right: 10px;
     }
 
 }
@@ -359,7 +435,7 @@ ul li img {
 
     .doll .boneco-img {
         width: 100%;
-        height: 100%;
+        height: 85%;
         position: relative;
         z-index: 1;
     }
@@ -372,10 +448,10 @@ ul li img {
     /* Exemplos específicos com medidas proporcionais */
     .hair-longo-liso-img {
         position: absolute;
-        width: 162.5%;
+        width: 142.5%;
         height: 40%;
         /* 650/400 */
-        top: 15%;
+        top: 16%;
         left: 40%;
         transform: translateX(-50%);
         z-index: 11;
@@ -385,18 +461,27 @@ ul li img {
         position: absolute;
         width: 147.5%;
         /* 750/400 */
-        top: 0%;
+        top: 2%;
         left: 50%;
         transform: translateX(-50%);
         z-index: 11;
     }
 
-    .hair-curto-cacheado-img,
-    .hair-curto-liso-img {
+    .hair-curto-cacheado-img {
         position: absolute;
         width: 62.5%;
         /* 250/400 */
-        top: 12.5%;
+        top: 11.5%;
+        left: 51%;
+        transform: translateX(-50%);
+        z-index: 11;
+    }
+
+    .hair-curto-liso-img {
+        position: absolute;
+        width: 67.5%;
+        /* 250/400 */
+        top: 13.5%;
         left: 50.5%;
         transform: translateX(-50%);
         z-index: 11;
@@ -404,10 +489,10 @@ ul li img {
 
     .hair-longo-ondulado-img {
         position: absolute;
-        width: 147%;
+        width: 167%;
         /* 750/400 */
-        top: 14%;
-        left: 52%;
+        top: 15%;
+        left: 53%;
         transform: translateX(-50%);
         z-index: 11;
     }
@@ -415,21 +500,21 @@ ul li img {
     .dress-img {
         width: 185%;
         /* 740/400 */
-        top: 35%;
-        left: 54%;
+        top: 36%;
+        left: 53.5%;
         transform: translateX(-50%);
     }
 
     .shirt-img {
         width: 162.5%;
         /* 650/400 */
-        top: 28%;
-        left: 57%;
+        top: 29%;
+        left: 54%;
         transform: translateX(-50%);
     }
 
     .calca-img {
-        width: 187.5%;
+        width: 200%;
         height: 40%;
         /* 750/400 */
         top: 50%;
@@ -474,10 +559,25 @@ ul li img {
     /* Expressão raiva */
     .esprecao-img-raiva {
         width: 52.5%;
-        top: 20%;
+        top: 22%;
         left: 59%;
         transform: translateX(-50%) translateX(-17.2%);
     }
+
+    .icon {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .icon svg {
+        transition: transform 0.3s ease;
+    }
+
+    .icon svg.open {
+        transform: rotate(180deg);
+    }
+
 
 
 
