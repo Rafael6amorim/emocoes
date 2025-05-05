@@ -56,7 +56,7 @@ export default function Hambiente({ onNavigateToGame }) {
   return (
     <div className="hambiente">
       <div className="container-hambiente">
-        <h1 className="title-hambiente">Mix and Match</h1>
+        <h1 className="title-hambiente">Emoções</h1>
 
         {etapa === 1 && (
           <div className="fundo-hambiente">

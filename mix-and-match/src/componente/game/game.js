@@ -321,62 +321,59 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
               key={index}
               className={`img-container ${className}`}  // Adiciona a classe da expressão
               onClick={() => {
-                if (imageSrc.startsWith("/assets/pants/")) {
+                if (selectedItem === 'paints') {
                   setItemsPaint({ paint: imageSrc });
                   setItemsDress({ dress: "" });
                 }
-                else if (imageSrc.startsWith("/assets/hair/curto-cacheado")) {
+                if (selectedItem === 'hairMain') {
                   setItemsHairCurtoCacheado({ hairCurtoCacheado: imageSrc });
                   setItemsHairCurtoLiso({ hairCurtoLiso: "" });
                   setItemsHairLongoCacheado({ hairLongoCacheado: "" });
                   setItemsHairLongoOndulado({ hairLongoOndulado: "" });
                   setItemsHairLongoLiso({ hairLongoLiso: "" });
                 }
-                else if (imageSrc.startsWith("/assets/hair/curto-liso")) {
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                else if (selectedItem === 'hairMain') {
                   setItemsHairCurtoLiso({ hairCurtoLiso: imageSrc });
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
                   setItemsHairLongoCacheado({ hairLongoCacheado: "" });
                   setItemsHairLongoOndulado({ hairLongoOndulado: "" });
                   setItemsHairLongoLiso({ hairLongoLiso: "" });
                 }
-                else if (imageSrc.startsWith("/assets/hair/longo-cacheado")) {
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                else if (selectedItem === 'hairGirl') {
                   setItemsHairLongoCacheado({ hairLongoCacheado: imageSrc });
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
                   setItemsHairLongoOndulado({ hairLongoOndulado: "" });
                   setItemsHairLongoLiso({ hairLongoLiso: "" });
                 }
-                else if (imageSrc.startsWith("/assets/hair/longo-ondulado")) {
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
-                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                else if (selectedItem === 'hairGirl') {
                   setItemsHairLongoOndulado({ hairLongoOndulado: imageSrc });
+                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
                   setItemsHairLongoLiso({ hairLongoLiso: "" });
                 }
-                else if (imageSrc.startsWith("/assets/hair/longo-liso")) {
+                else if (selectedItem === 'hairGirl') {
+                  setItemsHairLongoLiso({ hairLongoLiso: imageSrc });
                   setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
                   setItemsHairCurtoLiso({ hairCurtoLiso: "" });
                   setItemsHairLongoCacheado({ hairLongoCacheado: "" });
                   setItemsHairLongoOndulado({ hairLongoOndulado: "" });
-                  setItemsHairLongoLiso({ hairLongoLiso: imageSrc });
                 }
-                else if (imageSrc.startsWith("/assets/shirsts/shirt/")) {
+                else if (selectedItem === 'shirtMain') {
                   setItemsShirt({ shirt: imageSrc });
                   setItemsDress({ dress: "" });
                 }
-                else if (imageSrc.startsWith("/assets/shirsts/dress/")) {
-                  setItemsShirt({ shirt: "" });
-                  setItemsPaint({ paint: "" });
+                else if (selectedItem === 'dressMain') {
                   setItemsDress({ dress: imageSrc });
+                  setItemsShirt({ shirt: "" });
                 }
-                else if (imageSrc.startsWith("/assets/esprecoes/")) {
-                  // Extrai o nome da emoção do caminho da imagem
-                  const nomeExpressao = imageSrc.split('/').pop().replace('.png', '').toLowerCase();
+                else if (selectedItem === 'esprecao') {
                   setItemsEsprecoes({ esprecoes: imageSrc });
-                  setExpressaoAtual(nomeExpressao);
+                  setExpressaoAtual(className);
                 }
-                console.log("Imagem clicada:", imageSrc);
-                onClose();
+                onClose();  // Fecha o guarda-roupa após a seleção
+                
               }}
             >
               <img
