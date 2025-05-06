@@ -411,6 +411,27 @@ ul li img {
         right: 10px;
     }
 
+    .hair-longo-liso-img {
+        width: 130.5%;
+        top: 15%;
+        left: 42%;
+    }
+
+    .hair-longo-ondulado-img {
+        width: 150.5%;
+        top: 16%;
+        left: 53%;
+    }
+
+    .button-voltar:hover {
+        z-index: 100;
+    }
+    .icon {
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+
 }
 
 @media(max-width:1150px) {
