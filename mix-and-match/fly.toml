@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for mix-and-match on 2025-05-13T16:32:22-03:00
+
+# fly.toml app configuration file generated for emocoes on 2025-05-05T23:10:54Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
-
-app = 'mix-and-match'
-primary_region = 'gru'
+app = 'emocoes'
+primary_region = 'gig'
 
 [build]
 
@@ -20,3 +20,5 @@ primary_region = 'gru'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+  memory_mb = 1024
