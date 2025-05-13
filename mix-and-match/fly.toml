@@ -3,10 +3,11 @@
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
-app = 'mix-and-match'
+app = 'emocoes'
 primary_region = 'gig'
 
 [build]
+  dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 80
