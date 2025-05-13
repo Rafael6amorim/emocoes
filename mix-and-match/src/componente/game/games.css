@@ -55,7 +55,7 @@ aside {
     height: 100%;
     border: 1px solid black;
     overflow-x: hidden;
-    background-color: #EEDFB4;
+    background-color: #dfbb58;
     z-index: 11;
 }
 
@@ -422,6 +422,7 @@ ul li img {
         top: 16%;
         left: 53%;
     }
+
     .hair-curto-liso-img {
         top: 15.5%;
     }
@@ -430,6 +431,7 @@ ul li img {
     .button-voltar:hover {
         z-index: 100;
     }
+
     .icon {
         height: 40px;
         margin-bottom: 10px;
@@ -466,18 +468,19 @@ ul li img {
     }
 
     aside.show {
-        right: 243px;
+        right: 339px;
     }
 
     /* Classe base para todos os itens vestíveis */
     /* Exemplos específicos com medidas proporcionais */
     .hair-longo-liso-img {
         position: absolute;
-        width: 142.5%;
+        width: 200.5%;
+        height: 50%;
         height: 40%;
         /* 650/400 */
-        top: 16%;
-        left: 40%;
+        left: 53%;
+        top: 15%;
         transform: translateX(-50%);
         z-index: 11;
     }
@@ -523,10 +526,10 @@ ul li img {
     }
 
     .dress-img {
-        width: 185%;
-        /* 740/400 */
-        top: 36%;
         left: 53.5%;
+        top: 37%;
+        width: 200%;
+        height: 45%;
         transform: translateX(-50%);
     }
 
