@@ -367,6 +367,7 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
                 else if (selectedItem === 'dressMain') {
                   setItemsDress({ dress: imageSrc });
                   setItemsShirt({ shirt: "" });
+                  setItemsPaint({ paint: "" });
                 }
                 else if (selectedItem === 'esprecao') {
                   setItemsEsprecoes({ esprecoes: imageSrc });
