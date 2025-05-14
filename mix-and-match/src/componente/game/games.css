@@ -219,22 +219,21 @@ ul li img {
 /* Exemplos específicos com medidas proporcionais */
 .hair-longo-liso-img {
     position: absolute;
-    width: 200.5%;
-    height: 50%;
+    width: 142.5%;
     height: 40%;
     /* 650/400 */
-    left: 53%;
-    top: 15%;
+    top: 16%;
+    left: 40%;
     transform: translateX(-50%);
     z-index: 11;
 }
 
-.hair-longo-ondulado-img {
+.hair-longo-cacheado-img {
     position: absolute;
-    width: 167%;
+    width: 147.5%;
     /* 750/400 */
-    top: 15%;
-    left: 53%;
+    top: 2%;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 11;
 }

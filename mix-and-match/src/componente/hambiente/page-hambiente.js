@@ -13,8 +13,8 @@ export default function Hambiente({ onNavigateToGame }) {
   };
 
   const bonecos = {
-    boneco2: `${assetsPath}/bonecos/Boneco 2.png`,
-    boneco1: `${assetsPath}/bonecos/Boneco 3.png`,
+    // boneco2: `${assetsPath}/bonecos/Boneco 2.png`,
+    // boneco1: `${assetsPath}/bonecos/Boneco 3.png`,
     boneco4: `${assetsPath}/bonecos/boneco2.png`
   };
 
