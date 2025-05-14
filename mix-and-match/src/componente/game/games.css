@@ -248,7 +248,7 @@ ul li img {
     z-index: 11;
 }
 
-    /* left: 53%;
+/* left: 53%;
     top: 14.6%;
     width: 200%;
     height: 50%; */
@@ -373,6 +373,7 @@ ul li img {
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
 }
 
 .button-voltar:hover {
@@ -474,7 +475,7 @@ ul li img {
     }
 
     aside.show {
-        right: 339px;
+        right: 30.3%;
     }
 
     /* Classe base para todos os itens vestíveis */
