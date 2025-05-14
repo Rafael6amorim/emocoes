@@ -60,7 +60,7 @@ aside {
 }
 
 aside.show {
-    right: 345px;
+    right: 434px;
 }
 
 
@@ -219,23 +219,23 @@ ul li img {
 /* Exemplos específicos com medidas proporcionais */
 .hair-longo-liso-img {
     position: absolute;
-    width: 142.5%;
     height: 40%;
-    /* 650/400 */
-    top: 16%;
-    left: 40%;
+    width: 147.5%;
+    /* 750/400 */
+    top: 13.2%;
+    left: 40.3%;
     transform: translateX(-50%);
     z-index: 11;
 }
 
 .hair-longo-cacheado-img {
     position: absolute;
-    width: 147.5%;
-    /* 750/400 */
-    top: 2%;
-    left: 50%;
     transform: translateX(-50%);
     z-index: 11;
+    left: 53%;
+    top: 14.6%;
+    width: 200%;
+    height: 50%;
 }
 
 .hair-curto-cacheado-img {
@@ -248,12 +248,18 @@ ul li img {
     z-index: 11;
 }
 
-.hair-curto-liso-img {
+    /* left: 53%;
+    top: 14.6%;
+    width: 200%;
+    height: 50%; */
+
+
+.hair-curto-cacheado-img {
     position: absolute;
-    width: 67.5%;
+    width: 62.5%;
     /* 250/400 */
-    top: 13.5%;
-    left: 50.5%;
+    top: 14%;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 11;
 }
