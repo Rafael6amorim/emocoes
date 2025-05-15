@@ -246,6 +246,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
 
           {isClothesVisible && (
             <Wardrobe
+            assetsPath={assetsPathw}
               selectedItem={selectedItem}
               guardaRoupa={guardaRoupa}
               guardaRoupaCabelo={guardaRoupaCabelo}
@@ -274,7 +275,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
   );
 };
 
-const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
+const Wardrobe = ({  assetsPath, selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
   guardaRoupaShirts, setItemsPaint, setItemsHairCurtoCacheado, setItemsHairCurtoLiso,
   setItemsHairLongoCacheado, setItemsHairLongoOndulado, setItemsHairLongoLiso, setItemsEsprecoes,
   setItemsShirt, setItemsDress, esprecoesItens, setExpressaoAtual, onClose }) => {
@@ -324,7 +325,7 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
                 if (selectedItem === 'paints') {
                   setItemsPaint({ paint: imageSrc });
                   setItemsDress({ dress: "" });
-                } F
+                } 
                 if (selectedItem === 'hairMain') {
                   if (imageSrc.startsWith(`${assetsPath}/hair/curto-cacheado/`)) {
                     setItemsHairCurtoCacheado({ hairCurtoCacheado: imageSrc });
