@@ -121,10 +121,10 @@ export default function Hambiente({ onNavigateToGame }) {
 
                 </ul>
               </div>
-
+{/* 
               <button onClick={handleNext} className="arrow right">
                 <i className="fa-solid fa-chevron-right"></i>
-              </button>
+              </button> */}
             </div>
             <button
               onClick={() => {
