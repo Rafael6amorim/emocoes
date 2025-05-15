@@ -94,9 +94,19 @@ export default function Hambiente({ onNavigateToGame }) {
                   {keys.map((key, i) => {
                     const position = i - currentIndex;
                     let className = "slide";
-                    if (position === 0) className += " center";
-                    else if (Math.abs(position) === 1 || Math.abs(position) === keys.length - 1) className += " side";
-                    else className += " hidden";
+
+                    // Apenas para 2 imagens
+                    if (keys.length === 2) {
+                      if (position === 0) className += " center";
+                      else className += " side"; // A segunda imagem fica como "side"
+                    }
+                    // Para 3+ imagens (comportamento original)
+                    else {
+                      if (position === 0) className += " center";
+                      else if (Math.abs(position) === 1 || Math.abs(position) === keys.length - 1)
+                        className += " side";
+                      else className += " hidden";
+                    }
 
                     return (
                       <li key={key} className={className}>

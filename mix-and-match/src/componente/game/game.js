@@ -78,6 +78,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
     `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 1.png`,
     `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 2.png`,
     `${assetsPath}/shirsts/dress/dressRed.png`,
+    `${assetsPath}/shirsts/dress/Jogo_Projeto .zip - 5.png`,
   ]
 
 
