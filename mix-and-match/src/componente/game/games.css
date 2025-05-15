@@ -291,7 +291,7 @@ ul li img {
 .calca-img {
     position: absolute;
     width: 200%;
-    height: 45%;
+    height: 50%;
     /* 750/400 */
     top: 50%;
     left: 55%;
@@ -474,12 +474,12 @@ ul li img {
 
     /* Classe base para todos os itens vestíveis */
     /* Exemplos específicos com medidas proporcionais */
+    /*  
     .hair-longo-liso-img {
         position: absolute;
         width: 200.5%;
         height: 50%;
         height: 40%;
-        /* 650/400 */
         left: 53%;
         top: 15%;
         transform: translateX(-50%);
@@ -489,12 +489,13 @@ ul li img {
     .hair-longo-cacheado-img {
         position: absolute;
         width: 147.5%;
-        /* 750/400 */
         top: 2%;
         left: 50%;
         transform: translateX(-50%);
         z-index: 11;
     }
+
+    */
 
     .hair-curto-cacheado-img {
         position: absolute;
@@ -544,7 +545,6 @@ ul li img {
 
     .calca-img {
         width: 200%;
-        height: 40%;
         /* 750/400 */
         top: 50%;
         left: 55%;
