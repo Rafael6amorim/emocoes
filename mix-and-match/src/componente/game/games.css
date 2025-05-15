@@ -222,7 +222,7 @@ ul li img {
     height: 40%;
     width: 147.5%;
     /* 750/400 */
-    top: 13.2%;
+    top: 15%;
     left: 40.3%;
     transform: translateX(-50%);
     z-index: 11;
@@ -232,9 +232,9 @@ ul li img {
     position: absolute;
     transform: translateX(-50%);
     z-index: 11;
-    left: 53%;
-    top: 14.6%;
-    width: 200%;
+    left: 50%;
+    top: 0%;
+    width: 180%;
     height: 50%;
 }
 
@@ -243,18 +243,12 @@ ul li img {
     width: 62.5%;
     /* 250/400 */
     top: 11.5%;
-    left: 51%;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 11;
 }
 
-/* left: 53%;
-    top: 14.6%;
-    width: 200%;
-    height: 50%; */
-
-
-.hair-curto-cacheado-img {
+.hair-curto-liso-img {
     position: absolute;
     width: 62.5%;
     /* 250/400 */
