@@ -85,9 +85,9 @@ export default function Hambiente({ onNavigateToGame }) {
           <div className="slideshow-container">
             <h4 className="subtitle-hambiente">Escolha o seu boneco favorito</h4>
             <div className="slide-show-wrapper">
-              <button onClick={handlePrev} className="arrow left">
+              {/* <button onClick={handlePrev} className="arrow left">
                 <i className="fa-solid fa-chevron-left"></i>
-              </button>
+              </button> */}
 
               <div className="slide-show">
                 <ul className="slides-list">
@@ -121,21 +121,21 @@ export default function Hambiente({ onNavigateToGame }) {
 
                 </ul>
               </div>
-{/* 
+              {/* 
               <button onClick={handleNext} className="arrow right">
                 <i className="fa-solid fa-chevron-right"></i>
               </button> */}
             </div>
             <button
               onClick={() => {
-                const bonecoKey = keys[currentIndex];
-                setBonecoSelecionado(bonecos[bonecoKey]);
+                setBonecoSelecionado(bonecos.boneco4);
                 setEtapa(3);
               }}
               className="button-avancar"
             >
               Avançar
             </button>
+
 
           </div>
         )}
