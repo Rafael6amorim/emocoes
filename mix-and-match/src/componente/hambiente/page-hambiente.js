@@ -113,11 +113,12 @@ export default function Hambiente({ onNavigateToGame }) {
                         <img src={bonecos[key]} alt={key} />
                       </li>
                     ); */}
-{/* 
+                  {/* 
                   })} */}
-                    <li className={className}>
-                      <img src={bonecos.boneco4} alt={'boneco'} />
-                    </li>
+                  <li className="slide center">
+                    <img src={bonecos.boneco4} alt="boneco" />
+                  </li>
+
                 </ul>
               </div>
 
