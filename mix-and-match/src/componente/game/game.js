@@ -111,7 +111,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 767);
+      setIsMobile(window.innerWidth <= 700);
     };
 
     checkScreenSize();
