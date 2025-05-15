@@ -246,6 +246,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
 
           {isClothesVisible && (
             <Wardrobe
+              assetsPath={assetsPath}
               selectedItem={selectedItem}
               guardaRoupa={guardaRoupa}
               guardaRoupaCabelo={guardaRoupaCabelo}
@@ -274,7 +275,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
   );
 };
 
-const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
+const Wardrobe = ({assetsPath, selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
   guardaRoupaShirts, setItemsPaint, setItemsHairCurtoCacheado, setItemsHairCurtoLiso,
   setItemsHairLongoCacheado, setItemsHairLongoOndulado, setItemsHairLongoLiso, setItemsEsprecoes,
   setItemsShirt, setItemsDress, esprecoesItens, setExpressaoAtual, onClose }) => {
@@ -326,39 +327,44 @@ const Wardrobe = ({ selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPai
                   setItemsDress({ dress: "" });
                 }
                 if (selectedItem === 'hairMain') {
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: imageSrc });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
-                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
-                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
-                  setItemsHairLongoLiso({ hairLongoLiso: "" });
+                  if (imageSrc.startsWith(`${assetsPath}/hair/curto-cacheado/`)) {
+                    setItemsHairCurtoCacheado({ hairCurtoCacheado: imageSrc });
+                    setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                    setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                    setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                    setItemsHairLongoLiso({ hairLongoLiso: "" });
+                  }
+                  if (imageSrc.startsWith(`${assetsPath}/hair/curto-liso/`)) {
+                    setItemsHairCurtoLiso({ hairCurtoLiso: imageSrc });
+                    setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                    setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                    setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                    setItemsHairLongoLiso({ hairLongoLiso: "" });
+                  }
                 }
-                if (selectedItem === 'hairMain') {
-                  setItemsHairCurtoLiso({ hairCurtoLiso: imageSrc });
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
-                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
-                  setItemsHairLongoLiso({ hairLongoLiso: "" });
-                }
+
                 if (selectedItem === 'hairGirl') {
-                  setItemsHairLongoCacheado({ hairLongoCacheado: imageSrc });
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
-                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
-                  setItemsHairLongoLiso({ hairLongoLiso: "" });
-                }
-                if (selectedItem === 'hairGirl') {
-                  setItemsHairLongoOndulado({ hairLongoOndulado: imageSrc });
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
-                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
-                  setItemsHairLongoLiso({ hairLongoLiso: "" });
-                }
-                if (selectedItem === 'hairGirl') {
-                  setItemsHairLongoLiso({ hairLongoLiso: imageSrc });
-                  setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
-                  setItemsHairCurtoLiso({ hairCurtoLiso: "" });
-                  setItemsHairLongoCacheado({ hairLongoCacheado: "" });
-                  setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  if (imageSrc.startsWith(`${assetsPath}/hair/longo-cacheado/`)) {
+                    setItemsHairLongoCacheado({ hairLongoCacheado: imageSrc });
+                    setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                    setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                    setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                    setItemsHairLongoLiso({ hairLongoLiso: "" });
+                  }
+                  else if (imageSrc.startsWith(`${assetsPath}/hair/longo-ondulado/`)) {
+                    setItemsHairLongoOndulado({ hairLongoOndulado: imageSrc });
+                    setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                    setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                    setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                    setItemsHairLongoLiso({ hairLongoLiso: "" });
+                  }
+                  else if (imageSrc.startsWith(`${assetsPath}/hair/longo-liso/`)) {
+                    setItemsHairLongoLiso({ hairLongoLiso: imageSrc });
+                    setItemsHairCurtoCacheado({ hairCurtoCacheado: "" });
+                    setItemsHairCurtoLiso({ hairCurtoLiso: "" });
+                    setItemsHairLongoCacheado({ hairLongoCacheado: "" });
+                    setItemsHairLongoOndulado({ hairLongoOndulado: "" });
+                  }
                 }
                 else if (selectedItem === 'shirtMain') {
                   setItemsShirt({ shirt: imageSrc });
