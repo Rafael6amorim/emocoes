@@ -1,6 +1,6 @@
 import "./games.css";
-import React, { useState } from "react";
-import { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import html2canvas from "html2canvas";
 
 export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack }) {
 
@@ -15,7 +15,6 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
     paints: `${assetsPath}/pants/pant-principal.png`,
     esprecao: `${assetsPath}/esprecoes/aleggriaMain.png`,
   };
-
 
   const esprecoesItens = [
     { src: `${assetsPath}/esprecoes/alegria.png`, className: "alegria" },
@@ -108,6 +107,9 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
   const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
   const [isAsideOpen, setIsAsideOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [screenshot, setScreenshot] = useState(null);
+  const [processedBoneco, setProcessedBoneco] = useState(null);
+  const gameRef = useRef(null); // 🔹 referência para capturar a div do jogo
 
 
   useEffect(() => {
@@ -122,22 +124,148 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
   }, []);
 
 
+
+  // Função para processar a máscara
+  useEffect(() => {
+    const processMask = async () => {
+      if (!BonecoSelecionado) return;
+
+      try {
+        // Carrega a imagem da máscara
+        const maskImg = new Image();
+        maskImg.crossOrigin = "Anonymous";
+        maskImg.src = BonecoSelecionado;
+
+        await new Promise((resolve, reject) => {
+          maskImg.onload = resolve;
+          maskImg.onerror = reject;
+        });
+
+        // Cria canvas para processar
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = maskImg.naturalWidth || 300;
+        canvas.height = maskImg.naturalHeight || 400;
+
+        // Desenha a cor da pele
+        ctx.fillStyle = skinColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Aplica a máscara
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.drawImage(maskImg, 0, 0, canvas.width, canvas.height);
+
+        // Converte para data URL
+        setProcessedBoneco(canvas.toDataURL('image/png'));
+      } catch (error) {
+        console.error("Erro ao processar máscara:", error);
+        // Fallback: usa a máscara CSS normal
+        setProcessedBoneco(null);
+      }
+    };
+
+    processMask();
+  }, [BonecoSelecionado, skinColor]);
+
+
+const handleSave = async () => {
+  const gameElement = gameRef.current;
+  if (!gameElement) return;
+
+  // Pergunta o nome da imagem
+  const nomeImagem = prompt("Digite o nome da imagem:", "personagem_captura.png");
+  if (!nomeImagem) {
+    alert("Nome da imagem é obrigatório!");
+    return;
+  }
+
+  // Esconde elementos temporários
+  const elementsToHide = ['.clothes', '.button', '.guarda-roupa', '.icon'];
+  const originalStyles = {};
+
+  elementsToHide.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach((el, index) => {
+      const key = `${selector}-${index}`;
+      originalStyles[key] = el.style.display;
+      el.style.display = 'none';
+    });
+  });
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  try {
+    // CAPTURA A IMAGEM DENTRO DO handleSave
+    const canvas = await html2canvas(gameElement, {
+      useCORS: true,
+      backgroundColor: null,
+      scale: 1
+    });
+
+    const imgData = canvas.toDataURL("image/png"); // ← Declarada aqui!
+
+    const response = await fetch("http://127.0.0.1:8000/api/salvar_imagens/imagem/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome_imagem: nomeImagem,
+        imagem_base64: imgData // ← Agora funciona!
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Erro do servidor:", errorText);
+      throw new Error(`Erro ${response.status}: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log("Imagem salva:", result);
+    setScreenshot(imgData);
+
+  } catch (error) {
+    console.error("Erro ao salvar imagem:", error);
+    alert("Erro ao salvar imagem: " + error.message);
+  } finally {
+    // Restaura estilos
+    Object.keys(originalStyles).forEach(key => {
+      const [selector, index] = key.split('-');
+      const elements = document.querySelectorAll(selector);
+      if (elements[index]) {
+        elements[index].style.display = originalStyles[key];
+      }
+    });
+  }
+};
+
+
+
+
   return (
     <div className="Game">
-      <header className="Game-header" >
+      <header className="Game-header" ref={gameRef}>
         <img src={fundoSelecionado} alt="Fundo selecionado" className="img-fundo" />
         <main className={`game-main ${isClothesVisible ? "show" : ""}`}>
           <section className="doll">
 
-            <div
-              className="boneco-img"
-              style={{
-                WebkitMaskImage: `url(${BonecoSelecionado})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskSize: "contain",
-                backgroundColor: skinColor,
-              }}
-            ></div>
+            {processedBoneco ? (
+              <img
+                src={processedBoneco}
+                className="boneco-processado"
+                alt="Personagem"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              />
+            ) : (
+              <div
+                className="boneco-img"
+                style={{
+                  WebkitMaskImage: `url(${BonecoSelecionado})`,
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  backgroundColor: skinColor,
+                }}
+              ></div>
+            )}
 
 
             {itemshairCurtoCacheado.hairCurtoCacheado && (
@@ -269,14 +397,15 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
             />
           )}
 
-          <button onClick={onNavigateBack} className="button-voltar">Voltar</button>
+          <button onClick={onNavigateBack} className=" button button-voltar">Voltar</button>
+          <button onClick={handleSave} className="button button-salvar">Salvar</button>
         </main>
       </header>
     </div >
   );
 };
 
-const Wardrobe = ({assetsPath, selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
+const Wardrobe = ({ assetsPath, selectedItem, guardaRoupa, guardaRoupaCabelo, guardaRoupaPaints, guardaRoupaDress,
   guardaRoupaShirts, setItemsPaint, setItemsHairCurtoCacheado, setItemsHairCurtoLiso,
   setItemsHairLongoCacheado, setItemsHairLongoOndulado, setItemsHairLongoLiso, setItemsEsprecoes,
   setItemsShirt, setItemsDress, esprecoesItens, setExpressaoAtual, onClose }) => {

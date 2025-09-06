@@ -1,4 +1,4 @@
-import "./hambiente.css";
+import "./environment.css";
 import React, { useState } from "react";
 export default function Hambiente({ onNavigateToGame }) {
   const assetsPath = process.env.PUBLIC_URL + "/assets";

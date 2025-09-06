@@ -1,0 +1,92 @@
+.RegisterPage {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-container {
+    background: white;
+    padding: 2.5rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.register-container h2 {
+    font-size: 2.5rem;
+    color: #4f46e5;
+    margin-bottom: 1.5rem;
+    animation: swing 2s infinite;
+}
+
+@keyframes swing {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.register-container input,
+.register-container select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border: 2px solid #d9e2ec;
+    border-radius: 50px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-container input:focus,
+.register-container select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.3);
+}
+
+.register-container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #334e68;
+}
+
+.register-container button {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.register-container button:hover {
+    background-color: #323236;
+    transform: scale(1.05);
+}
+
+.mensagem {
+    margin-top: 1rem;
+    font-weight: 500;
+    color: #e11d48; /* vermelho para erros */
+}
+
+.psicologo-fields,
+.clinica-fields {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}

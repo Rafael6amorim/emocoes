@@ -77,13 +77,36 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class ClinicaPsicologos(models.Model):
+    id_clinica = models.ForeignKey('Clinicas', models.DO_NOTHING, db_column='id_clinica')
+    id_psicologo = models.ForeignKey('Psicologo', models.DO_NOTHING, db_column='id_psicologo')
+    data_inicio = models.DateField(blank=True, null=True)
+    ativo = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'clinica_psicologos'
+        unique_together = (('id_clinica', 'id_psicologo'),)
+
+
+class Clinicas(models.Model):
+    id_clinica = models.AutoField(primary_key=True)
+    id_usuario = models.OneToOneField('Usuarios', models.DO_NOTHING, db_column='id_usuario')
+    nome_clinica = models.CharField(max_length=150)
+    cnpj = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    endereco = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'clinicas'
+
+
 class Consultas(models.Model):
     id_consulta = models.AutoField(primary_key=True)
     id_paciente = models.ForeignKey('Pacientes', models.DO_NOTHING, db_column='id_paciente')
     data_consulta = models.DateField()
     id_psicologo = models.ForeignKey('Psicologo', models.DO_NOTHING, db_column='id_psicologo', blank=True, null=True)
-    imagem = models.BinaryField(blank=True, null=True)
-    nome_imagem = models.CharField(max_length=50, blank=True, null=True)
+    id_imagem = models.ForeignKey('ImagensSalvas', models.DO_NOTHING, db_column='id_imagem', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -135,11 +158,22 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class ImagensSalvas(models.Model):
+    id_imagens = models.IntegerField(primary_key=True)
+    nome_imagens = models.CharField(unique=True, max_length=55, blank=True, null=True)
+    imagens = models.BinaryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'imagens_salvas'
+
+
 class Pacientes(models.Model):
     id_paciente = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
     idade = models.IntegerField(blank=True, null=True)
     tipo_tratamento = models.CharField(max_length=100, blank=True, null=True)
+    id_psicologo = models.ForeignKey('Psicologo', models.DO_NOTHING, db_column='id_psicologo', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -151,7 +185,21 @@ class Psicologo(models.Model):
     nome_psicologo = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100, blank=True, null=True)
     crp = models.CharField(max_length=20)
+    id_usuario = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='id_usuario')
+    id_clinica = models.OneToOneField(Clinicas, models.DO_NOTHING, db_column='id_clinica', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'psicologo'
+
+
+class Usuarios(models.Model):
+    id_usuario = models.AutoField(primary_key=True)
+    email = models.CharField(unique=True, max_length=255)
+    senha = models.CharField(max_length=255)
+    tipo_usuario = models.CharField(max_length=20)
+    data_criacao = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'usuarios'
