@@ -2,9 +2,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
-from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas
+from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas,ViewConsultaPsicologo
 from .serializers import PacientesSerializer,PsicologoSerializer,ConsultasSerializer,UsuariosSerializer
-from .serializers import ClinicasSerializer,ImagensSalvasSerializer
+from .serializers import ClinicasSerializer,ImagensSalvasSerializer,ViewConsultaPsicologoSerializer
 import base64
 from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
@@ -85,17 +85,18 @@ def popular_psicologos(request):
     data = request.data.get('psicologos', [])
     serializer = PsicologoSerializer(data=data, many=True)
 
-    if serializer.is_valid():
+    if serializer.is_valid():  # <-- alinhado com serializer
         serializer.save()
-        return Response({"success": True, "created": len(data)})
-    return Response({"success": False, "errors": serializer.errors})
+        return Response({"success": True, "created": len(data)}, status=201)
 
+    return Response({"success": False, "errors": serializer.errors}, status=400)
 
 @api_view(['GET'])
 def listar_psicologos(request):
-    psicologos = Psicologo.objects.all()
-    serializer = PsicologoSerializer(psicologos, many=True)
+    psicologos = ViewConsultaPsicologo.objects.all()
+    serializer = ViewConsultaPsicologoSerializer(psicologos, many=True)
     return Response(serializer.data)
+
 
 
 
@@ -342,6 +343,7 @@ usuario_schema = openapi.Schema(
         409: "Email já cadastrado"
     }
 )
+
 @api_view(['POST'])
 def criar_usuario(request):
     email = request.data.get('email')
@@ -362,9 +364,9 @@ def criar_usuario(request):
 
     usuario = Usuarios.objects.create(
         email=email,
-        senha=senha,  # ⚠️ ideal seria usar hash (ex: make_password)
+        senha=senha, 
         tipo_usuario=tipo_usuario,
-        data_criacao=timezone.now()  # ⬅️ aqui seta a data atual
+        data_criacao=timezone.now()
     )
 
     serializer = UsuariosSerializer(usuario)
@@ -375,6 +377,15 @@ def criar_usuario(request):
         },
         status=status.HTTP_201_CREATED
     )
+
+@api_view(['GET'])
+def listar_usuarios(request):
+    usuarios = Usuarios.objects.all()
+    serializer = UsuariosSerializer(usuarios, many=True)
+    return Response(serializer.data)
+
+
+
 
 # views.py
 @api_view(['GET'])

@@ -1,0 +1,225 @@
+/* consultation_patients.css */
+
+.consultation-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.back-button {
+    background-color: #f8f9fa;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: #edf2f7;
+    transform: translateY(-1px);
+}
+
+.psychologist-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+}
+
+.psychologist-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.psychologist-info h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+}
+
+.psychologist-email {
+    margin: 0 0 0.5rem 0;
+    opacity: 0.9;
+}
+
+.psychologist-specialty {
+    margin: 0;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.patients-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.patients-section h2 {
+    margin: 0 0 0.5rem 0;
+    color: #2d3748;
+    font-size: 1.5rem;
+}
+
+.patients-count {
+    color: #718096;
+    margin: 0 0 1.5rem 0;
+    font-size: 0.95rem;
+}
+
+.patients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.patient-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #48bb78;
+    transition: transform 0.2s ease;
+}
+
+.patient-card:hover {
+    transform: translateX(4px);
+    background: #f1f5f9;
+}
+
+.patient-main-info h3 {
+    margin: 0 0 0.75rem 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+}
+
+.patient-details {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.patient-age {
+    font-size: 0.9rem;
+    color: #718096;
+    background: #edf2f7;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+}
+
+.patient-treatment {
+    font-size: 0.9rem;
+    color: #2d3748;
+    background: #e6fffa;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.patient-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-indicator.active {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #48bb78;
+    animation: pulse 2s infinite;
+}
+
+.patient-status span {
+    font-size: 0.85rem;
+    color: #718096;
+    font-weight: 500;
+}
+
+.empty-patients {
+    text-align: center;
+    padding: 3rem;
+    color: #a0aec0;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-patients h3 {
+    margin: 0 0 0.5rem 0;
+    color: #718096;
+}
+
+.empty-patients p {
+    margin: 0;
+    font-style: italic;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.2rem;
+    color: #667eea;
+}
+
+.error {
+    color: #e53e3e;
+    text-align: center;
+    padding: 2rem;
+    background: #fed7d7;
+    border-radius: 8px;
+    margin: 2rem;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .consultation-container {
+        padding: 1rem;
+    }
+    
+    .psychologist-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .patient-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .patient-status {
+        align-self: flex-end;
+    }
+    
+    .patient-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

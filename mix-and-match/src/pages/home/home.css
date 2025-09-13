@@ -61,3 +61,205 @@
     background-color: #323236;
     transform: scale(1.05);
 }
+
+.logout:hover{
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+/* home.css - Adicione estas regras */
+
+/* Popup Styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.popup-content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: popupFadeIn 0.3s ease;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.popup-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.popup-body {
+    padding: 1.5rem;
+    max-height: 400px;
+}
+
+.loading-popup {
+    text-align: center;
+    padding: 2rem;
+    color: #667eea;
+}
+
+.patients-list-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.patient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.patient-item:hover {
+    border-color: #667eea;
+    background-color: #f8fafc;
+}
+
+.patient-item.selected {
+    border-color: #48bb78;
+    background-color: #f0fff4;
+}
+
+.patient-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.patient-info p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    color: #718096;
+}
+
+.selected-check {
+    color: #48bb78;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.no-patients {
+    text-align: center;
+    padding: 2rem;
+    color: #a0aec0;
+}
+
+.no-patients p {
+    margin-bottom: 1rem;
+}
+
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.popup-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.popup-button.cancel {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+.popup-button.cancel:hover {
+    background-color: #cbd5e0;
+}
+
+.popup-button.confirm {
+    background-color: #48bb78;
+    color: white;
+}
+
+.popup-button.confirm:hover:not(:disabled) {
+    background-color: #38a169;
+}
+
+.popup-button.confirm:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .popup-content {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+    }
+    
+    .popup-footer {
+        flex-direction: column;
+    }
+    
+    .popup-button {
+        width: 100%;
+    }
+}

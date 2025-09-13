@@ -6,6 +6,8 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
     const [nome, setNome] = useState("");
     const [idade, setIdade] = useState("");
     const [tipoTratamento, setTipoTratamento] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
     const [mensagem, setMensagem] = useState("");
 
     const handleSubmit = async (e) => {
@@ -14,15 +16,27 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
         try {
             // Obter os dados do usuário logado do localStorage
             const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-            console.log(usuarioLogado);
-            
+            console.log("Usuário logado:", usuarioLogado);
+
             // Buscar o psicólogo pelo ID do usuário
             let id_psicologo = null;
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/api/psicologo/usuario/${usuarioLogado.id_usuario}/`);
-                if (response.data && response.data.id_psicologo) {
+                console.log("Resposta da API:", response.data);
+                
+                // Verifica se a resposta é um array ou um objeto único
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    // Se for array, pega o primeiro psicólogo
+                    id_psicologo = response.data[0].id_psicologo;
+                    console.log("Psicólogo encontrado (array):", id_psicologo);
+                } else if (response.data && response.data.id_psicologo) {
+                    // Se for um objeto único com id_psicologo
                     id_psicologo = response.data.id_psicologo;
-                    console.log("Psicólogo encontrado:", id_psicologo);
+                    console.log("Psicólogo encontrado (objeto):", id_psicologo);
+                } else if (usuarioLogado.id_psicologo) {
+                    // Se o próprio usuário logado já tem id_psicologo (como no seu log)
+                    id_psicologo = usuarioLogado.id_psicologo;
+                    console.log("Psicólogo do usuário logado:", id_psicologo);
                 }
             } catch (error) {
                 console.error("Erro ao buscar psicólogo:", error);
@@ -35,23 +49,37 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
                 return;
             }
 
+            // 1️⃣ Primeiro criar um novo usuário para o paciente
+            const resUsuario = await axios.post(
+                "http://127.0.0.1:8000/api/criar_Usuario/usario/",
+                {
+                    email,
+                    senha,
+                    tipo_usuario: "paciente",
+                }
+            );
+
+            const id_usuario_paciente = resUsuario.data.usuario.id_usuario;
+
+            // 2️⃣ Agora cadastrar o paciente com o novo ID de usuário
             const dadosPaciente = {
                 nome,
                 idade: parseInt(idade),
                 tipo_tratamento: tipoTratamento,
-                id_psicologo: id_psicologo // Usa o ID do psicólogo encontrado
+                id_psicologo: id_psicologo, // ID do psicólogo que está cadastrando
+                id_usuario: id_usuario_paciente // ID do novo usuário criado para o paciente
             };
 
             await axios.post("http://127.0.0.1:8000/api/popular/pacientes/", {
                 pacientes: [dadosPaciente],
             });
-            
+
             alert("Paciente cadastrado com sucesso!");
             onRegisterSuccess();
             setMensagem("Paciente cadastrado com sucesso!");
-            
+
         } catch (error) {
-            console.error(error);
+            console.error("Erro detalhado:", error);
             setMensagem("Erro ao cadastrar: " + (error.response?.data?.erro || "Desconhecido"));
         }
     };
@@ -68,7 +96,7 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
                     onChange={(e) => setNome(e.target.value)}
                     required
                 />
-                
+
                 <input
                     type="number"
                     placeholder="Idade"
@@ -76,12 +104,28 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
                     onChange={(e) => setIdade(e.target.value)}
                     required
                 />
-                
+
                 <input
                     type="text"
                     placeholder="Tipo de tratamento"
                     value={tipoTratamento}
                     onChange={(e) => setTipoTratamento(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="email"
+                    placeholder="Email do paciente"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="password"
+                    placeholder="Senha do paciente"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
                     required
                 />
 

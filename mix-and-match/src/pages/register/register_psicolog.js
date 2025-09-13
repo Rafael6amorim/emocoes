@@ -6,6 +6,8 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
     const [nomePsicologo, setNomePsicologo] = useState("");
     const [abordagem, setAbordagem] = useState("");
     const [crp, setCrp] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
     const [mensagem, setMensagem] = useState("");
 
     const handleSubmit = async (e) => {
@@ -15,7 +17,7 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
             // Obter os dados do usuário logado do localStorage
             const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
             console.log(usuarioLogado);
-            
+
             // Buscar a clínica pelo ID do usuário
             let id_clinica = null;
             try {
@@ -25,35 +27,47 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
                     console.log("Clínica encontrada:", id_clinica);
                 }
             } catch (error) {
-                console.error("Erro ao buscar clínica:", error);
-                setMensagem("Erro ao buscar dados da clínica. Tente novamente.");
-                return;
+                console.error("Erro detalhado:", error.response?.data || error.message);
+                setMensagem("Erro ao cadastrar: " + JSON.stringify(error.response?.data));
             }
-            
+
             if (!id_clinica) {
                 setMensagem("Erro: Clínica não encontrada. Faça login novamente.");
                 return;
             }
 
+            // 1️⃣ Primeiro criar um novo usuário para o psicólogo
+            const resUsuario = await axios.post(
+                "http://127.0.0.1:8000/api/criar_Usuario/usario/",
+                {
+                    email,
+                    senha,
+                    tipo_usuario: "psicologo",
+                }
+            );
+
+            const id_usuario_psicologo = resUsuario.data.usuario.id_usuario;
+
+            // 2️⃣ Agora cadastrar o psicólogo com o novo ID de usuário
             const dadosPsicologo = {
                 nome_psicologo: nomePsicologo,
                 abordagem,
                 crp,
-                id_usuario: usuarioLogado.id_usuario, // ID da clínica que está cadastrando
+                id_usuario: id_usuario_psicologo, // ID do novo usuário criado
                 id_clinica: id_clinica // ID da clínica encontrada
             };
 
             await axios.post("http://127.0.0.1:8000/api/popular/psicologos/", {
                 psicologos: [dadosPsicologo],
             });
-            
+
             alert("Psicólogo cadastrado com sucesso!");
             onRegisterSuccess();
             setMensagem("Psicólogo cadastrado com sucesso!");
-            
+
         } catch (error) {
-            console.error(error);
-            setMensagem("Erro ao cadastrar: " + (error.response?.data?.erro || "Desconhecido"));
+            console.error("Erro detalhado:", error.response?.data || error.message);
+            setMensagem("Erro ao cadastrar: " + JSON.stringify(error.response?.data));
         }
     };
 
@@ -69,7 +83,7 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
                     onChange={(e) => setNomePsicologo(e.target.value)}
                     required
                 />
-                
+
                 <input
                     type="text"
                     placeholder="Abordagem"
@@ -77,12 +91,28 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
                     onChange={(e) => setAbordagem(e.target.value)}
                     required
                 />
-                
+
                 <input
                     type="text"
                     placeholder="CRP"
                     value={crp}
                     onChange={(e) => setCrp(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="email"
+                    placeholder="Email do psicólogo"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="password"
+                    placeholder="Senha do psicólogo"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
                     required
                 />
 

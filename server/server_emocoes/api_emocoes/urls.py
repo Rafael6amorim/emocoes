@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import usuarios,listar_clinicas,listar_psicologos,listar_pacientes,clinica_por_usuario,psicologo_por_usuario
+from .views import usuarios,listar_clinicas,listar_psicologos,listar_pacientes,clinica_por_usuario,psicologo_por_usuario,listar_usuarios
 from .views import criar_usuario,popular_pacientes,popular_psicologos,popular_consulta,popular_imagens,popular_clinicas
 urlpatterns = [
     path('popular/pacientes/', popular_pacientes, name='popular_pacientes'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('listar/clinicas/', listar_clinicas, name='listar_clinicas'),
     path('listar/psicologos/', listar_psicologos, name='listar_psicologos'),
     path('listar/pacientes/', listar_pacientes, name='listar_pacientes'),
+    path('listar/usuarios/', listar_usuarios, name='listar_usuarios'),
     path('clinica/usuario/<int:usuario_id>/', clinica_por_usuario, name='clinica_por_usuario'),
     path('psicologo/usuario/<int:usuario_id>/', psicologo_por_usuario, name='psicologo_por_usuario'),
 ]
