@@ -2,8 +2,26 @@ import "./games.css";
 import React, { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 
-export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack }) {
+export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack, paciente, handleNavigateToConsultationImages}) {
 
+  const [itemsPaint, setItemsPaint] = useState({ paint: "" });
+  const [itemshairCurtoCacheado, setItemsHairCurtoCacheado] = useState({ hairCurtoCacheado: "" });
+  const [itemshairCurtoLiso, setItemsHairCurtoLiso] = useState({ hairCurtoLiso: "" });
+  const [itemshairLongoCacheado, setItemsHairLongoCacheado] = useState({ hairLongoCacheado: "" });
+  const [itemshairLongoOndulado, setItemsHairLongoOndulado] = useState({ hairLongoOndulado: "" });
+  const [itemshairLongoLiso, setItemsHairLongoLiso] = useState({ hairLongoLiso: "" });
+  const [itemsShirt, setItemsShirt] = useState({ shirt: "" });
+  const [itemsDress, setItemsDress] = useState({ dress: "" });
+  const [expressaoAtual, setExpressaoAtual] = useState("");
+  const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
+  const [isAsideOpen, setIsAsideOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [screenshot, setScreenshot] = useState(null);
+  const [processedBoneco, setProcessedBoneco] = useState(null);
+  const gameRef = useRef(null); // 🔹 referência para capturar a div do jogo
+  const [showModal, setShowModal] = useState(false);
+  const [savedImage, setSavedImage] = useState(null);
+  const [consultaCriada, setConsultaCriada] = useState(null);
   const assetsPath = process.env.PUBLIC_URL + "/assets";
 
   const items = {
@@ -95,22 +113,6 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
     setClothesVisible(false);
   };
 
-  const [itemsPaint, setItemsPaint] = useState({ paint: "" });
-  const [itemshairCurtoCacheado, setItemsHairCurtoCacheado] = useState({ hairCurtoCacheado: "" });
-  const [itemshairCurtoLiso, setItemsHairCurtoLiso] = useState({ hairCurtoLiso: "" });
-  const [itemshairLongoCacheado, setItemsHairLongoCacheado] = useState({ hairLongoCacheado: "" });
-  const [itemshairLongoOndulado, setItemsHairLongoOndulado] = useState({ hairLongoOndulado: "" });
-  const [itemshairLongoLiso, setItemsHairLongoLiso] = useState({ hairLongoLiso: "" });
-  const [itemsShirt, setItemsShirt] = useState({ shirt: "" });
-  const [itemsDress, setItemsDress] = useState({ dress: "" });
-  const [expressaoAtual, setExpressaoAtual] = useState("");
-  const [itemsEsprecoes, setItemsEsprecoes] = useState({ esprecoes: "" });
-  const [isAsideOpen, setIsAsideOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [screenshot, setScreenshot] = useState(null);
-  const [processedBoneco, setProcessedBoneco] = useState(null);
-  const gameRef = useRef(null); // 🔹 referência para capturar a div do jogo
-
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -168,77 +170,99 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
   }, [BonecoSelecionado, skinColor]);
 
 
-const handleSave = async () => {
-  const gameElement = gameRef.current;
-  if (!gameElement) return;
+  const handleSave = async () => {
+    const gameElement = gameRef.current;
+    if (!gameElement) return;
 
-  // Pergunta o nome da imagem
-  const nomeImagem = prompt("Digite o nome da imagem:", "personagem_captura.png");
-  if (!nomeImagem) {
-    alert("Nome da imagem é obrigatório!");
-    return;
-  }
-
-  // Esconde elementos temporários
-  const elementsToHide = ['.clothes', '.button', '.guarda-roupa', '.icon'];
-  const originalStyles = {};
-
-  elementsToHide.forEach(selector => {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach((el, index) => {
-      const key = `${selector}-${index}`;
-      originalStyles[key] = el.style.display;
-      el.style.display = 'none';
-    });
-  });
-
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  try {
-    // CAPTURA A IMAGEM DENTRO DO handleSave
-    const canvas = await html2canvas(gameElement, {
-      useCORS: true,
-      backgroundColor: null,
-      scale: 1
-    });
-
-    const imgData = canvas.toDataURL("image/png"); // ← Declarada aqui!
-
-    const response = await fetch("http://127.0.0.1:8000/api/salvar_imagens/imagem/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome_imagem: nomeImagem,
-        imagem_base64: imgData // ← Agora funciona!
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Erro do servidor:", errorText);
-      throw new Error(`Erro ${response.status}: ${response.statusText}`);
+    // Pergunta o nome da imagem
+    const nomeImagem = prompt("Digite o nome da imagem:", "personagem_captura.png");
+    if (!nomeImagem) {
+      alert("Nome da imagem é obrigatório!");
+      return;
     }
 
-    const result = await response.json();
-    console.log("Imagem salva:", result);
-    setScreenshot(imgData);
+    // Esconde elementos temporários
+    const elementsToHide = ['.clothes', '.button', '.guarda-roupa', '.icon'];
+    const originalStyles = {};
 
-  } catch (error) {
-    console.error("Erro ao salvar imagem:", error);
-    alert("Erro ao salvar imagem: " + error.message);
-  } finally {
-    // Restaura estilos
-    Object.keys(originalStyles).forEach(key => {
-      const [selector, index] = key.split('-');
+    elementsToHide.forEach(selector => {
       const elements = document.querySelectorAll(selector);
-      if (elements[index]) {
-        elements[index].style.display = originalStyles[key];
-      }
+      elements.forEach((el, index) => {
+        const key = `${selector}-${index}`;
+        originalStyles[key] = el.style.display;
+        el.style.display = 'none';
+      });
     });
-  }
-};
 
+    await new Promise(resolve => setTimeout(resolve, 500));
 
+    try {
+      // CAPTURA A IMAGEM
+      const canvas = await html2canvas(gameElement, {
+        useCORS: true,
+        backgroundColor: null,
+        scale: 1
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+
+      // PRIMEIRO: Salva a imagem
+      const imagemResponse = await fetch("http://127.0.0.1:8000/api/salvar_imagens/imagem/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome_imagem: nomeImagem,
+          imagem_base64: imgData
+        })
+      });
+
+      if (!imagemResponse.ok) {
+        const errorText = await imagemResponse.text();
+        throw new Error(`Erro ao salvar imagem: ${errorText}`);
+      }
+
+      const imagemResult = await imagemResponse.json();
+      console.log("Imagem salva:", imagemResult);
+
+      // SEGUNDO: Cria a consulta com os dados do paciente
+      const consultaResponse = await fetch("http://127.0.0.1:8000/api/popular/consultas/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_paciente: paciente ? paciente.id_paciente : null,
+          id_psicologo: paciente ? paciente.id_psicologo : null,
+          data_consulta: new Date().toISOString().split('T')[0],
+          id_imagem: imagemResult.id_imagem
+        })
+      });
+
+      if (!consultaResponse.ok) {
+        const errorText = await consultaResponse.text();
+        throw new Error(`Erro ao criar consulta: ${errorText}`);
+      }
+
+      const consultaResult = await consultaResponse.json();
+      console.log("Consulta criada:", consultaResult);
+
+      setScreenshot(imgData);
+      setSavedImage(imgData);
+      setConsultaCriada(consultaResult);
+      setShowModal(true);
+
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro: " + error.message);
+    } finally {
+      // Restaura estilos
+      Object.keys(originalStyles).forEach(key => {
+        const [selector, index] = key.split('-');
+        const elements = document.querySelectorAll(selector);
+        if (elements[index]) {
+          elements[index].style.display = originalStyles[key];
+        }
+      });
+    }
+  };
 
 
   return (
@@ -399,6 +423,59 @@ const handleSave = async () => {
 
           <button onClick={onNavigateBack} className=" button button-voltar">Voltar</button>
           <button onClick={handleSave} className="button button-salvar">Salvar</button>
+
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h3>Imagem Salva com Sucesso!</h3>
+                  <button
+                    className="modal-close"
+                    onClick={() => setShowModal(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="modal-body">
+                  <div className="image-preview">
+                    <img
+                      src={savedImage}
+                      alt="Imagem salva"
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '300px',
+                        border: '2px solid #ccc',
+                        borderRadius: '8px'
+                      }}
+                    />
+                  </div>
+
+                  <div className="modal-actions">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        console.log("Navegar para consultas da consulta:", consultaCriada.id_consulta);
+                        setShowModal(false);
+                        handleNavigateToConsultationImages();
+                      }}
+                    >
+                      Ver Consultas
+                    </button>
+
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        setShowModal(false);
+                      }}
+                    >
+                      Continuar no Jogo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </header>
     </div >

@@ -2,7 +2,7 @@ import "./home.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Home({ onNavigate, onLogout, userType, userId, onNavigateToRegisterPsicologo, onNavigateToRegisterPaciente, onNavigateToPsychologists, onNavigateToPatients }) {
+export default function Home({ onNavigate, onLogout, userType, userId, onNavigateToRegisterPsicologo, onNavigateToRegisterPaciente, onNavigateToPsychologists, onNavigateToPatients, handleNavigateToConsultationImages }) {
     const [showPatientPopup, setShowPatientPopup] = useState(false);
     const [pacientes, setPacientes] = useState([]);
     const [psicologo, setPsicologo] = useState([]);
@@ -89,9 +89,18 @@ export default function Home({ onNavigate, onLogout, userType, userId, onNavigat
                     </button>
 
                     {/* Botão comum para todos os usuários */}
-                    <button className="button-home">
-                        Rever Consultas
-                    </button>
+                    {userType !== "comum" && (
+                        <button className="button-home" onClick={handleNavigateToConsultationImages}>
+                            Rever Consultas
+                        </button>
+                    )}
+                    
+                    {/* Botão comum para todos os usuários */}
+                    {userType === "comum" && (
+                        <button className="button-home" onClick={handleNavigateToConsultationImages}>
+                            Rever Seções
+                        </button>
+                    )}
 
                     {/* Botão exclusivo para psicólogos */}
                     {userType === "psicologo" && (

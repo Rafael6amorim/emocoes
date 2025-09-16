@@ -7,14 +7,17 @@ import RegisterPsicologo from './pages/register/register_psicolog';
 import RegisterPaciente from './pages/register/register_paciente';
 import Consultationpsychologist from './pages/consultation/consultation_psychologist';
 import ConsultationPatients from './pages/consultation/consultation';
+import ConsultationImages from './pages/consultation/consultation_images';
 import { useState, useEffect } from 'react';
 
 function App() {
   const [screen, setScreen] = useState('login');
   const [usuario, setUsuario] = useState(null);
+  const [paciente, setPaciente] = useState(null)
   const [selectedFundo, setSelectedFundo] = useState(null);
   const [selectedBoneco, setSelectedBoneco] = useState(null);
   const [selectedSkinColor, setSelectedSkinColor] = useState(null);
+  const [consultaSelecionada, setConsultaSelecionada] = useState(null);
   const [userId, setUserId] = useState(null);
 
   // Checa se já tem usuário no localStorage quando a app abre
@@ -49,6 +52,11 @@ function App() {
     setScreen('consultation-patients');
   };
 
+  const handleNavigateToConsultationImages = (consultaId = null) => {
+    setConsultaSelecionada(consultaId);
+    setScreen('consultation-images');
+  };
+
   return (
     <div className="App">
       {screen === 'login' && (
@@ -70,6 +78,7 @@ function App() {
             if (selectedPaciente) {
               // Armazene o paciente selecionado se necessário
               console.log("Paciente selecionado:", selectedPaciente);
+              setPaciente(selectedPaciente)
             }
             setScreen('hambiente');
           }}
@@ -80,6 +89,7 @@ function App() {
           onNavigateToRegisterPaciente={() => setScreen('register-paciente')}
           onNavigateToPsychologists={handleNavigateToPsychologists}
           onNavigateToPatients={handleNavigateToPatients}
+          handleNavigateToConsultationImages={handleNavigateToConsultationImages}
         />
       )}
 
@@ -100,6 +110,16 @@ function App() {
           BonecoSelecionado={selectedBoneco}
           skinColor={selectedSkinColor}
           onNavigateBack={() => setScreen('hambiente')}
+          paciente={paciente}
+          handleNavigateToConsultationImages={handleNavigateToConsultationImages}
+        />
+      )}
+
+      {screen === 'consultation-images' && (
+        <ConsultationImages
+          onNavigateBack={() => setScreen('home')}
+          userId={userId}
+          consultaId={consultaSelecionada}
         />
       )}
 

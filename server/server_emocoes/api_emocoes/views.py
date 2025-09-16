@@ -1,14 +1,17 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from django.core.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
-from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas,ViewConsultaPsicologo
+from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas,ViewConsultaPsicologo,VwConsultasDetalhes
 from .serializers import PacientesSerializer,PsicologoSerializer,ConsultasSerializer,UsuariosSerializer
-from .serializers import ClinicasSerializer,ImagensSalvasSerializer,ViewConsultaPsicologoSerializer
+from .serializers import ClinicasSerializer,ImagensSalvasSerializer,ViewConsultaPsicologoSerializer,VwConsultasDetalhesSerializer
 import base64
 from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+import base64
 
 
 
@@ -98,8 +101,6 @@ def listar_psicologos(request):
     return Response(serializer.data)
 
 
-
-
 @swagger_auto_schema(
     method='post',
     request_body=openapi.Schema(
@@ -169,18 +170,28 @@ def listar_clinicas(request):
 )
 @api_view(['POST'])
 def popular_consulta(request):
-    consultas = []
-    for c in request.data.get('consultas', []):
+    try:
+        consulta_data = request.data
+        
         consulta = Consultas(
-            id_paciente_id=c["id_paciente"],
-            id_psicologo_id=c.get("id_psicologo"),
-            data_consulta=c["data_consulta"],
-            id_imagem_id=c.get("id_imagem"),
+            id_paciente_id=consulta_data["id_paciente"],
+            id_psicologo_id=consulta_data.get("id_psicologo"),
+            data_consulta=consulta_data["data_consulta"],
+            id_imagem_id=consulta_data.get("id_imagem"),
         )
-        consultas.append(consulta)
-
-    Consultas.objects.bulk_create(consultas)
-    return Response({"success": True, "created": len(consultas)})
+        consulta.save()
+        
+        return Response({
+            "success": True, 
+            "id_consulta": consulta.id_consulta,
+            "message": "Consulta criada com sucesso"
+        })
+        
+    except Exception as e:
+        return Response({
+            "success": False,
+            "error": str(e)
+        }, status=400)
 
 
 
@@ -261,6 +272,73 @@ def popular_imagens(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_consultas(request):
+    try:
+        tipo_usuario = request.GET.get('tipo_usuario')
+        usuario_email = request.GET.get('usuario_email')
+        usuario_nome = request.GET.get('usuario_nome')
+        
+        print(f"🎯 Parâmetros: tipo_usuario={tipo_usuario}, usuario_email={usuario_email}")
+        
+        consultas = VwConsultasDetalhes.objects.all()
+        
+        if tipo_usuario and usuario_email and usuario_email != 'undefined':
+            if tipo_usuario == 'psicologo':
+                consultas = consultas.filter(email_psicologo=usuario_email)
+                print(f"✅ Filtrado por email: {usuario_email}")
+                
+            elif tipo_usuario == 'comum':
+                consultas = consultas.filter(nome_paciente=usuario_nome)
+        
+        print(f"📦 Consultas encontradas: {consultas.count()}")
+        
+        # Processa os dados MANUALMENTE para garantir todos os campos
+        resultado = []
+        for consulta in consultas:
+            imagem_base64 = None
+            tem_imagem = False
+            
+            if consulta.imagens:
+                tem_imagem = True
+                try:
+                    if isinstance(consulta.imagens, memoryview):
+                        image_bytes = consulta.imagens.tobytes()
+                    elif isinstance(consulta.imagens, bytes):
+                        image_bytes = consulta.imagens
+                    else:
+                        image_bytes = None
+                    
+                    if image_bytes:
+                        imagem_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+                        
+                except Exception as e:
+                    print(f"Erro ao processar imagem: {e}")
+            
+            # INCLUA TODOS OS CAMPOS QUE PRECISA
+            consulta_data = {
+                "id_consulta": consulta.id_consulta,
+                "data_consulta": consulta.data_consulta,
+                "nome_paciente": consulta.nome_paciente,
+                "idade": consulta.idade,
+                "tipo_tratamento": consulta.tipo_tratamento,
+                "nome_psicologo": consulta.nome_psicologo,
+                "abordagem": consulta.abordagem,
+                "crp": consulta.crp,
+                "email_psicologo": consulta.email_psicologo,  # ← Novo campo
+                "nome_imagens": consulta.nome_imagens,
+                "imagem_base64": imagem_base64,
+                "tem_imagem": tem_imagem
+            }
+            resultado.append(consulta_data)
+        
+        return Response(resultado)
+
+    except Exception as e:
+        print(f"❌ Erro: {e}")
+        return Response({'error': str(e)}, status=400)
 
 
 # Definição dos parâmetros de entrada (email e senha)

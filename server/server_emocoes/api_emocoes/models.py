@@ -103,7 +103,7 @@ class Clinicas(models.Model):
 
 class Consultas(models.Model):
     id_consulta = models.AutoField(primary_key=True)
-    id_paciente = models.ForeignKey('Pacientes', models.DO_NOTHING, db_column='id_paciente')
+    id_paciente = models.ForeignKey('Pacientes', models.DO_NOTHING, db_column='id_paciente',blank=True, null=True)
     data_consulta = models.DateField()
     id_psicologo = models.ForeignKey('Psicologo', models.DO_NOTHING, db_column='id_psicologo', blank=True, null=True)
     id_imagem = models.ForeignKey('ImagensSalvas', models.DO_NOTHING, db_column='id_imagem', blank=True, null=True)
@@ -219,3 +219,20 @@ class ViewConsultaPsicologo(models.Model):
     class Meta:
         managed = False
         db_table = 'view_consulta_psicologo'
+
+class VwConsultasDetalhes(models.Model):
+    id_consulta = models.IntegerField(primary_key=True)
+    data_consulta = models.DateField(blank=True, null=True)
+    nome_paciente = models.CharField(max_length=100, blank=True, null=True)
+    idade = models.IntegerField(blank=True, null=True)
+    tipo_tratamento = models.CharField(max_length=100, blank=True, null=True)
+    nome_psicologo = models.CharField(max_length=100, blank=True, null=True)
+    abordagem = models.CharField(max_length=100, blank=True, null=True)
+    crp = models.CharField(max_length=20, blank=True, null=True)
+    email_psicologo = models.CharField(max_length=255, blank=True, null=True)  # ← NOVO CAMPO!
+    nome_imagens = models.CharField(max_length=55, blank=True, null=True)
+    imagens = models.BinaryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vw_consultas_detalhes'
