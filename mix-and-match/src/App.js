@@ -112,6 +112,7 @@ function App() {
           onNavigateBack={() => setScreen('hambiente')}
           paciente={paciente}
           handleNavigateToConsultationImages={handleNavigateToConsultationImages}
+          userId={userId}
         />
       )}
 
@@ -126,12 +127,14 @@ function App() {
       {screen === 'register-psicologo' && (
         <RegisterPsicologo
           onRegisterSuccess={() => setScreen('home')}
+          onNavigateBack={() => setScreen('hambiente')}
         />
       )}
 
       {screen === 'register-paciente' && (
         <RegisterPaciente
           onRegisterSuccess={() => setScreen('home')}
+          onNavigateBack={() => setScreen('hambiente')}
         />
       )}
 

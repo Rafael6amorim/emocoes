@@ -84,9 +84,12 @@ export default function Home({ onNavigate, onLogout, userType, userId, onNavigat
 
                 <div className="buttons">
                     {/* Botão para jogar - comportamento diferente para psicólogos */}
-                    <button onClick={handlePlayButtonClick} className="button-home">
-                        Vamos Brincar!
-                    </button>
+
+                    {userType !== "clinica" && (
+                        <button onClick={handlePlayButtonClick} className="button-home">
+                            Vamos Brincar!
+                        </button>
+                    )}
 
                     {/* Botão comum para todos os usuários */}
                     {userType !== "comum" && (
@@ -94,7 +97,7 @@ export default function Home({ onNavigate, onLogout, userType, userId, onNavigat
                             Rever Consultas
                         </button>
                     )}
-                    
+
                     {/* Botão comum para todos os usuários */}
                     {userType === "comum" && (
                         <button className="button-home" onClick={handleNavigateToConsultationImages}>

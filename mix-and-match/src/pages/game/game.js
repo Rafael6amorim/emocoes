@@ -2,7 +2,7 @@ import "./games.css";
 import React, { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 
-export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack, paciente, handleNavigateToConsultationImages}) {
+export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack, paciente, handleNavigateToConsultationImages, userId}) {
 
   const [itemsPaint, setItemsPaint] = useState({ paint: "" });
   const [itemshairCurtoCacheado, setItemsHairCurtoCacheado] = useState({ hairCurtoCacheado: "" });
@@ -212,7 +212,8 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nome_imagem: nomeImagem,
-          imagem_base64: imgData
+          imagem_base64: imgData,
+          id_usuario: userId
         })
       });
 
@@ -277,7 +278,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
                 src={processedBoneco}
                 className="boneco-processado"
                 alt="Personagem"
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                style={{ width: '100%', objectFit: 'contain' }}
               />
             ) : (
               <div

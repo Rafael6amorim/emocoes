@@ -202,8 +202,9 @@ def popular_consulta(request):
         properties={
             'nome_imagem': openapi.Schema(type=openapi.TYPE_STRING, description='Nome da imagem'),
             'imagem_base64': openapi.Schema(type=openapi.TYPE_STRING, description='Imagem em base64'),
+            'id_usuario': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID do usuário dono da imagem'),
         },
-        required=['imagem_base64']
+        required=['imagem_base64', 'id_usuario']
     )
 )
 @api_view(['POST'])
@@ -211,66 +212,88 @@ def popular_imagens(request):
     try:
         nome_imagem = request.data.get("nome_imagem")
         imagem_base64 = request.data.get("imagem_base64")
-        
-        if not nome_imagem:
-            return Response(
-                {"success": False, "error": "Nome da imagem é obrigatório"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        if not imagem_base64:
-            return Response(
-                {"success": False, "error": "Imagem base64 é obrigatória"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        id_usuario = request.data.get("id_usuario")
 
-        # VERIFICAÇÃO ANTECIPADA se o nome já existe
+        if not nome_imagem:
+            return Response({"success": False, "error": "Nome da imagem é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not imagem_base64:
+            return Response({"success": False, "error": "Imagem base64 é obrigatória"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not id_usuario:
+            return Response({"success": False, "error": "ID do usuário é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verifica se o usuário existe
+        try:
+            usuario = Usuarios.objects.get(pk=id_usuario)
+        except Usuarios.DoesNotExist:
+            return Response({"success": False, "error": "Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Verificação se o nome já existe
         if ImagensSalvas.objects.filter(nome_imagens=nome_imagem).exists():
-            return Response(
-                {"success": False, "error": "Já existe uma imagem com esse nome"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"success": False, "error": "Já existe uma imagem com esse nome"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Processa a imagem base64
         if ',' in imagem_base64:
             imagem_base64 = imagem_base64.split(',')[1]
-        
+
         try:
             imagem_bytes = base64.b64decode(imagem_base64)
         except (ValueError, binascii.Error):
-            return Response(
-                {"success": False, "error": "Formato base64 inválido"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"success": False, "error": "Formato base64 inválido"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # CALCULA O PRÓXIMO ID MANUALMENTE
+        # Calcula ID manualmente
         ultimo_id = ImagensSalvas.objects.all().order_by('-id_imagens').first()
-        if ultimo_id:
-            proximo_id = ultimo_id.id_imagens + 1
-        else:
-            proximo_id = 1  # Primeiro registro
+        proximo_id = ultimo_id.id_imagens + 1 if ultimo_id else 1
 
-        # Salva no banco de dados com o ID calculado
+        # Salva no banco
         imagem = ImagensSalvas(
             id_imagens=proximo_id,
             nome_imagens=nome_imagem,
-            imagens=imagem_bytes
+            imagens=imagem_bytes,
+            id_usuario=usuario,
+            data_imagem=timezone.now() 
         )
         imagem.save()
+
 
         return Response({
             "success": True,
             "id_imagem": imagem.id_imagens,
-            "nome_imagem": imagem.nome_imagens
+            "nome_imagem": imagem.nome_imagens,
+            "id_usuario": imagem.id_usuario.id_usuario,
+            "data_imagem": imagem.data_imagem.strftime("%Y-%m-%d %H:%M:%S")
         })
 
     except Exception as e:
-        # Log do erro para debugging
         print(f"Erro interno: {str(e)}")
-        return Response(
-            {"success": False, "error": f"Erro interno do servidor: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
+        return Response({"success": False, "error": f"Erro interno do servidor: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+import base64
+
+@api_view(['GET'])
+def listar_imagens_usuario(request, id_usuario):  # 👈 deve ser 'id_usuario'
+    try:
+        imagens = ImagensSalvas.objects.filter(id_usuario=id_usuario).order_by('-data_imagem')
+        
+        lista = []
+        for img in imagens:
+            imagem_base64 = None
+            if img.imagens:
+                imagem_base64 = f"data:image/png;base64,{base64.b64encode(img.imagens).decode('utf-8')}"
+            
+            lista.append({
+                "id_imagem": img.id_imagens,
+                "nome_imagem": img.nome_imagens,
+                "data_imagem": img.data_imagem.strftime("%Y-%m-%d %H:%M:%S"),
+                "imagem_base64": imagem_base64
+            })
+        
+        return Response(lista, status=200)
+    except Exception as e:
+        return Response({"success": False, "error": str(e)}, status=500)
+
 
 
 @api_view(['GET'])

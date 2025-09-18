@@ -163,6 +163,7 @@ class ImagensSalvas(models.Model):
     nome_imagens = models.CharField(unique=True, max_length=55, blank=True, null=True)
     imagens = models.BinaryField(blank=True, null=True)
     id_usuario = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+    data_imagem = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
