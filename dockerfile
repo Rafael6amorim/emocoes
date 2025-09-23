@@ -33,10 +33,9 @@ COPY server/ .
 # Copiar build do frontend para static files do Django
 COPY --from=frontend-build /app/frontend/build /app/static/
 
-# Coletar static files (incluindo o frontend build)
+
 RUN python manage.py collectstatic --noinput
 
-# Expor porta
 EXPOSE 8000
 
 # Comando de inicialização
