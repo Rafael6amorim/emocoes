@@ -1,5 +1,6 @@
 // pages/consultation/consultation_patients.js
 import { useEffect, useState } from "react";
+import { API_URL } from '../../service/api_service';
 import axios from "axios";
 import "./consultation.css";
 
@@ -16,7 +17,7 @@ export default function ConsultationPatients({ onNavigateBack, userId }) {
         const fetchData = async () => {
             try {
                 // Primeiro busca o psicólogo pelo userId
-                const resPsicologos = await axios.get("http://127.0.0.1:8000/api/listar/psicologos/");
+                const resPsicologos = await axios.get(`${API_URL}/listar/psicologos/`);
                 console.log(resPsicologos);
                 
                 const psicologoEncontrado = resPsicologos.data.find(p => p.id_usuario === userId);
@@ -25,7 +26,7 @@ export default function ConsultationPatients({ onNavigateBack, userId }) {
                     setPsicologo(psicologoEncontrado);
                     
                     // Agora busca todos os pacientes
-                    const resPacientes = await axios.get("http://127.0.0.1:8000/api/listar/pacientes/");
+                    const resPacientes = await axios.get(`${API_URL}/listar/pacientes/`);
                     
                     // Filtra apenas os pacientes deste psicólogo
                     const pacientesDoPsicologo = resPacientes.data.filter(

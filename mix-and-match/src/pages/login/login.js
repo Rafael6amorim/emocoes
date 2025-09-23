@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./login.css";
+import { API_URL } from '../../service/api_service'
 import Register from "../register/register";
 
 export default function Login({ onLoginSuccess, onNavigateToRegister }) {
@@ -12,7 +13,7 @@ export default function Login({ onLoginSuccess, onNavigateToRegister }) {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/login/usuario/?email=${email}&senha=${senha}`
+        `${API_URL}/login/usuario/?email=${email}&senha=${senha}`
       );
 
       const data = await response.json();
@@ -28,7 +29,7 @@ export default function Login({ onLoginSuccess, onNavigateToRegister }) {
       // Se não estiver na resposta principal, faça uma requisição adicional
       if (!userType) {
         const userInfoResponse = await fetch(
-          `http://127.0.0.1:8000/api/usuario/${data.usuario.id_usuario}/tipo/`
+          `${API_URL}/usuario/${data.usuario.id_usuario}/tipo/`
         );
         
         if (userInfoResponse.ok) {
@@ -45,7 +46,7 @@ export default function Login({ onLoginSuccess, onNavigateToRegister }) {
         // Buscar ID do psicólogo
         try {
           const psicologoResponse = await fetch(
-            `http://127.0.0.1:8000/api/psicologo/usuario/${data.usuario.id_usuario}/`
+            `${API_URL}/psicologo/usuario/${data.usuario.id_usuario}/`
           );
           if (psicologoResponse.ok) {
             const psicologoData = await psicologoResponse.json();
@@ -59,7 +60,7 @@ export default function Login({ onLoginSuccess, onNavigateToRegister }) {
         // Buscar ID da clínica
         try {
           const clinicaResponse = await fetch(
-            `http://127.0.0.1:8000/api/clinica/usuario/${data.usuario.id_usuario}/`
+            `${API_URL}/clinica/usuario/${data.usuario.id_usuario}/`
           );
           if (clinicaResponse.ok) {
             const clinicaData = await clinicaResponse.json();

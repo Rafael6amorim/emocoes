@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from '../../service/api_service';
 import "./consultation_psychologist.css";
 
 export default function Consultationpsychologist({ onNavigateBack, userId }) {
@@ -17,9 +18,9 @@ export default function Consultationpsychologist({ onNavigateBack, userId }) {
         const fetchData = async () => {
             try {
                 const [resPsicologos, resPacientes,resClinica] = await Promise.all([
-                    axios.get("http://127.0.0.1:8000/api/listar/psicologos/"),
-                    axios.get("http://127.0.0.1:8000/api/listar/pacientes/"),
-                    axios.get("http://127.0.0.1:8000/api/listar/clinicas/"),
+                    axios.get(`${API_URL}/listar/psicologos/`),
+                    axios.get(`${API_URL}/listar/pacientes/`),
+                    axios.get(`${API_URL}/listar/clinicas/`),
                 ]);
 
                 setPsicologos(resPsicologos.data);

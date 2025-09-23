@@ -27,7 +27,11 @@ SECRET_KEY = 'django-insecure-kox9303=3(d)m_0-dtx(2o-vlx!eyw))9*&#u114+y%h*8e))k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'server.mix-and-match.internal',
+    'emocoes.fly.dev/',  # ← Seu domínio no Fly.io
+    '.fly.dev',         # ← Todos os subdomínios fly.dev
+]
 
 # Application definition
 
@@ -58,7 +62,16 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://emocoes.fly.dev/",
 ]
+
+# Configuração de URLs da API
+if os.environ.get('FLY_APP_NAME'):
+    # Produção
+    API_BASE_URL = 'https://emocoes.fly.dev'
+else:
+    # Desenvolvimento
+    API_BASE_URL = 'http://localhost:8000'
 
 ROOT_URLCONF = 'server_emocoes.urls'
 

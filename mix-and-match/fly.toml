@@ -1,22 +1,61 @@
-# fly.toml app configuration file generated for mix-and-match on 2025-05-13T16:32:22-03:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = 'mix-and-match'
 primary_region = 'gru'
 
 [build]
+  build_args = {
+    BUILDKIT_INLINE_CACHE = "1"
+  }
 
-[http_service]
+# Serviço do Backend (Django)
+[[services]]
+  internal_port = 8000
+  protocol = "tcp"
+  name = "backend"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 8000
+
+  [[services.http_checks]]
+    interval = 10000
+    grace_period = "5s"
+    method = "get"
+    path = "/api/health/"
+    protocol = "http"
+    timeout = 2000
+
+# Serviço do Frontend
+[[services]]
   internal_port = 80
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+  protocol = "tcp"
+  name = "frontend"
 
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.http_checks]]
+    interval = 10000
+    grace_period = "5s"
+    method = "get"
+    path = "/"
+    protocol = "http"
+    timeout = 2000
+
+# Máquina virtual
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
+  memory = "1gb"
+  cpu_kind = "shared"
   cpus = 1

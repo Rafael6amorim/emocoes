@@ -1,5 +1,6 @@
 import "./games.css";
 import React, { useState, useEffect, useRef } from "react";
+import { API_URL } from '../../service/api_service';
 import html2canvas from "html2canvas";
 
 export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, onNavigateBack, paciente, handleNavigateToConsultationImages, userId}) {
@@ -207,7 +208,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
       const imgData = canvas.toDataURL("image/png");
 
       // PRIMEIRO: Salva a imagem
-      const imagemResponse = await fetch("http://127.0.0.1:8000/api/salvar_imagens/imagem/", {
+      const imagemResponse = await fetch(`${API_URL}/salvar_imagens/imagem/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -226,7 +227,7 @@ export default function Game({ fundoSelecionado, BonecoSelecionado, skinColor, o
       console.log("Imagem salva:", imagemResult);
 
       // SEGUNDO: Cria a consulta com os dados do paciente
-      const consultaResponse = await fetch("http://127.0.0.1:8000/api/popular/consultas/", {
+      const consultaResponse = await fetch(`${API_URL}/popular/consultas/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,5 +1,6 @@
 import './consultation_images.css'
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../service/api_service';
 
 const ConsultationImages = ({ onNavigateBack }) => {
     const [consultas, setConsultas] = useState([]);
@@ -27,13 +28,13 @@ const ConsultationImages = ({ onNavigateBack }) => {
             try {
                 let url = '';
                 if (isComum) {
-                    url = `http://127.0.0.1:8000/api/imagens/usuario/${userInfo.id_usuario}/`;
+                    url = `${API_URL}/imagens/usuario/${userInfo.id_usuario}/`;
                 } else {
                     const params = new URLSearchParams({
                         tipo_usuario: userInfo.tipo_usuario,
                         usuario_email: userInfo.email
                     });
-                    url = `http://127.0.0.1:8000/api/listar/consultas/?${params.toString()}`;
+                    url = `${API_URL}/listar/consultas/?${params.toString()}`;
                 }
 
                 const response = await fetch(url);

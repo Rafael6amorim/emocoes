@@ -1,5 +1,6 @@
 import "./home.css";
 import React, { useState, useEffect } from "react";
+import { API_URL } from '../../service/api_service'
 import axios from "axios";
 
 export default function Home({ onNavigate, onLogout, userType, userId, onNavigateToRegisterPsicologo, onNavigateToRegisterPaciente, onNavigateToPsychologists, onNavigateToPatients, handleNavigateToConsultationImages }) {
@@ -20,8 +21,8 @@ export default function Home({ onNavigate, onLogout, userType, userId, onNavigat
         setLoading(true);
         try {
             const [resPsicologos, resPacientes] = await Promise.all([
-                axios.get("http://127.0.0.1:8000/api/listar/psicologos/"),
-                axios.get("http://127.0.0.1:8000/api/listar/pacientes/"),
+                axios.get(`${API_URL}/listar/psicologos/`),
+                axios.get(`${API_URL}/listar/pacientes/`),
             ]);
 
             // Encontra o psicólogo do usuário logado
