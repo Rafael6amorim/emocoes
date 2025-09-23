@@ -2,8 +2,8 @@ app = "mix-and-match"
 primary_region = "gru"
 
 [build]
-  dockerfile = "dockerfile"
-  
+  dockerfile = "Dockerfile"
+
 [http_service]
   internal_port = 8000
   force_https = true
