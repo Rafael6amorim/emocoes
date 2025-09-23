@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -26,7 +28,6 @@ SECRET_KEY = 'django-insecure-kox9303=3(d)m_0-dtx(2o-vlx!eyw))9*&#u114+y%h*8e))k
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -59,7 +60,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-
 ROOT_URLCONF = 'server_emocoes.urls'
 
 TEMPLATES = [
@@ -79,21 +79,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server_emocoes.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME' : "emocoes",
-        'USER' : "postgres", 
-        'PASSWORD' : "Postgre",
-        'HOST' : "localhost",
-        'PORT' : "5432",
+        'NAME': os.getenv('SUPABASE_NAME', 'postgres'),
+        'USER': os.getenv('SUPABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('SUPABASE_PASSWORD', ''),
+        'HOST': os.getenv('SUPABASE_HOST', ''),
+        'PORT': os.getenv('SUPABASE_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': os.getenv('SUPABASE_SSL_MODE', 'require'),
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -113,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -124,7 +124,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
