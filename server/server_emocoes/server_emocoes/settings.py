@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'server.mix-and-match.internal',
-    'emocoes.fly.dev/',  # ← Seu domínio no Fly.io
+    'emocoes.fly.dev',  # ← Seu domínio no Fly.io
     '.fly.dev',         # ← Todos os subdomínios fly.dev
 ]
 
@@ -62,7 +62,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://emocoes.fly.dev/",
+    "https://emocoes.fly.dev",
 ]
 
 # Configuração de URLs da API
@@ -141,7 +141,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Em produção, servir static files corretamente
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
