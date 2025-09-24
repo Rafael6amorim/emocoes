@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL (opcional - pode usar Supabase também)
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: emocoes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Aplicação Django + React
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SUPABASE_HOST=db.vfojqwrviqmjjknasvfj.supabase.co
+      - SUPABASE_NAME=postgres
+      - SUPABASE_USER=postgres
+      - SUPABASE_PASSWORD=sua_senha_do_supabase
+      - SUPABASE_PORT=5432
+      - SUPABASE_SSL_MODE=require
+      - DATABASE_URL=postgresql://postgres:sua_senha@db.vfojqwrviqmjjknasvfj.supabase.co:5432/postgres?sslmode=require
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app
+      - static_volume:/app/staticfiles
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py collectstatic --noinput &&
+        gunicorn server_emocoes.wsgi:application --bind 0.0.0.0:8000
+      "
+
+  # Frontend para desenvolvimento (opcional)
+  frontend-dev:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./mix-and-match:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
