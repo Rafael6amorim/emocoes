@@ -21,7 +21,7 @@ WORKDIR /app
 
 # Dependências Python
 COPY server/requirements.txt /app/server/requirements.txt
-RUN pip install --no-cache-dir -r /app/server/requirements.txt
+RUN pip install --no-cache-dir -r /app/server/requirements.txt gunicorn==21.2.0
 
 # Código backend
 COPY server/ /app/server/
