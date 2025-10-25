@@ -1,4 +1,4 @@
-# Build do frontend
+# Build do frontend (React)
 FROM node:18-alpine AS frontend-build
 WORKDIR /app/mix-and-match
 COPY mix-and-match/package*.json ./
@@ -8,8 +8,15 @@ RUN npm run build
 
 # Runtime do Django
 FROM python:3.12-slim
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PORT=8080
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev postgresql-client && rm -rf /var/lib/apt/lists/*
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8080
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Dependências Python
@@ -22,7 +29,7 @@ COPY server/ /app/server/
 # Estáticos do frontend para STATIC_ROOT
 COPY --from=frontend-build /app/mix-and-match/build /app/static/
 
-# Collectstatic
+# Collectstatic no diretório do Django
 WORKDIR /app/server/server_emocoes
 RUN python manage.py collectstatic --noinput
 
