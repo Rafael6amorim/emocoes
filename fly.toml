@@ -1,5 +1,4 @@
 app = "emocoes"
-primary_region = "gru"
 
 [build]
   dockerfile = "dockerfile"
