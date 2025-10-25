@@ -41,7 +41,7 @@ SECRET_KEY = 'django-insecure-kox9303=3(d)m_0-dtx(2o-vlx!eyw))9*&#u114+y%h*8e))k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "emocoes.fly.dev,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Application definition
 

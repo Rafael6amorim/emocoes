@@ -34,4 +34,4 @@ WORKDIR /app/server/server_emocoes
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
-CMD ["gunicorn", "server_emocoes.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2"]
+CMD ["gunicorn", "server_emocoes.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "120"]
