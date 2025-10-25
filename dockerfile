@@ -26,8 +26,12 @@ RUN pip install --no-cache-dir -r /app/server/requirements.txt gunicorn==21.2.0
 # Código backend
 COPY server/ /app/server/
 
-# Estáticos do frontend para STATIC_ROOT
-COPY --from=frontend-build /app/mix-and-match/build /app/static/
+# Estáticos do frontend para STATIC_ROOT (apenas a pasta 'static')
+COPY --from=frontend-build /app/mix-and-match/build/static /app/static/
+COPY --from=frontend-build /app/mix-and-match/build/slick /app/static/slick
+
+# Index do SPA fora do STATIC_ROOT
+COPY --from=frontend-build /app/mix-and-match/build/index.html /app/spa/index.html
 
 # Collectstatic no diretório do Django
 WORKDIR /app/server/server_emocoes

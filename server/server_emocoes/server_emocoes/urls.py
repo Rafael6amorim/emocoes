@@ -20,7 +20,7 @@ def healthz(_request):
     return HttpResponse("ok")
 
 def spa(_request, path=None):
-    index_path = "/app/static/index.html"
+    index_path = "/app/spa/index.html"
     if os.path.exists(index_path):
         return FileResponse(open(index_path, "rb"))
     return HttpResponse("index.html not found", status=404)
@@ -28,8 +28,8 @@ def spa(_request, path=None):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/', include('api_emocoes.urls')),  # <-- aqui você importa as URLs do app
+    path('api/', include('api_emocoes.urls')),
     path("healthz", healthz),
-    # catch-all para o React (deixe por último para não sobrescrever APIs)
-    re_path(r"^(?!admin/|api/).*", spa),
+    # catch-all para o React (não capture admin/api/static/slick)
+    re_path(r"^(?!admin/|api/|static/|slick/).*", spa),
 ]
