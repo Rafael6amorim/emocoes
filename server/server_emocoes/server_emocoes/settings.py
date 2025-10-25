@@ -41,16 +41,7 @@ SECRET_KEY = 'django-insecure-kox9303=3(d)m_0-dtx(2o-vlx!eyw))9*&#u114+y%h*8e))k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    # Produção
-    'server.mix-and-match.internal',
-    'emocoes.fly.dev',  # ← Seu domínio no Fly.io
-    '.fly.dev',         # ← Todos os subdomínios fly.dev
-    # Desenvolvimento
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Application definition
 
@@ -171,7 +162,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/app/static'
 
 # Em produção, servir static files corretamente
 if not DEBUG:
