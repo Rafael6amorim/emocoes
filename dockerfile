@@ -28,13 +28,18 @@ COPY server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código do backend
-COPY server/ .
+COPY server/ /app/server/
 
-# Copiar build do frontend para static files do Django
-COPY --from=frontend-build /app/frontend/build /app/static/
+# Garantir que o backend esteja dentro da imagem antes do collectstatic
+COPY server/ /app/server/
 
-
+# Rode os comandos a partir do diretório do Django
 WORKDIR /app/server/server_emocoes
+
+# Opcional (debug): verifique se o manage.py está no lugar
+# RUN ls -la /app/server/server_emocoes
+
+# Coletar estáticos
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
