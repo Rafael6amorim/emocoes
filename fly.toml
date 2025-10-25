@@ -2,7 +2,8 @@ app = "mix-and-match"
 primary_region = "gru"
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = "dockerfile"
+  context = "."
 
 [build.args]
   BUILDKIT_INLINE_CACHE = "1"
