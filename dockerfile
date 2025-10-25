@@ -34,6 +34,7 @@ COPY server/ .
 COPY --from=frontend-build /app/frontend/build /app/static/
 
 
+WORKDIR /app/server/server_emocoes
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
