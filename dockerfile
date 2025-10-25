@@ -28,7 +28,8 @@ COPY server/ /app/server/
 
 # Estáticos do frontend para STATIC_ROOT (apenas a pasta 'static')
 COPY --from=frontend-build /app/mix-and-match/build/static /app/static/
-COPY --from=frontend-build /app/mix-and-match/build/slick /app/static/slick
+# Copiar slick direto do node_modules (o build não cria /build/slick)
+COPY --from=frontend-build /app/mix-and-match/node_modules/slick-carousel/slick /app/static/slick
 
 # Index do SPA fora do STATIC_ROOT
 COPY --from=frontend-build /app/mix-and-match/build/index.html /app/spa/index.html
