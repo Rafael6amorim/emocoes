@@ -1,1 +1,6 @@
-**/.env__pycache__/
+# Ignorar arquivos de ambiente sensíveis
+**/.env
+server/.env
+
+# Cache do Python
+**/__pycache__/

@@ -16,7 +16,21 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+# Carrega variáveis do .env procurando em locais comuns
+# Prioriza server/server_emocoes/.env; se não existir, tenta server/.env
+_env_candidates = [
+    BASE_DIR / '.env',
+    BASE_DIR.parent / '.env',
+]
+for _env_path in _env_candidates:
+    try:
+        if _env_path.exists():
+            load_dotenv(_env_path)
+            break
+    except Exception:
+        # Evita quebrar inicialização caso algo dê errado; variáveis podem vir do ambiente
+        pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -28,9 +42,14 @@ SECRET_KEY = 'django-insecure-kox9303=3(d)m_0-dtx(2o-vlx!eyw))9*&#u114+y%h*8e))k
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    # Produção
     'server.mix-and-match.internal',
     'emocoes.fly.dev',  # ← Seu domínio no Fly.io
     '.fly.dev',         # ← Todos os subdomínios fly.dev
+    # Desenvolvimento
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
 ]
 
 # Application definition
@@ -62,6 +81,15 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://emocoes.fly.dev",
+]
+
+# Recomendado para requisições com CSRF (formularios/cookies)
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
     "https://emocoes.fly.dev",
 ]
 
@@ -98,13 +126,13 @@ WSGI_APPLICATION = 'server_emocoes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('SUPABASE_NAME', 'postgres'),
-        'USER': os.getenv('SUPABASE_USER', 'postgres'),
-        'PASSWORD': os.getenv('SUPABASE_PASSWORD', ''),
-        'HOST': os.getenv('SUPABASE_HOST', ''),
-        'PORT': os.getenv('SUPABASE_PORT', '5432'),
+        'NAME': os.getenv('SUPABASE_NAME', 'postgres').strip(),
+        'USER': os.getenv('SUPABASE_USER', 'postgres').strip(),
+        'PASSWORD': os.getenv('SUPABASE_PASSWORD', '').strip(),
+        'HOST': os.getenv('SUPABASE_HOST', '').strip(),
+        'PORT': os.getenv('SUPABASE_PORT', '5432').strip(),
         'OPTIONS': {
-            'sslmode': os.getenv('SUPABASE_SSL_MODE', 'require'),
+            'sslmode': os.getenv('SUPABASE_SSL_MODE', 'require').strip(),
         },
     }
 }
