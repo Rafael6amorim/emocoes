@@ -88,12 +88,44 @@ def popular_psicologos(request):
     data = request.data.get('psicologos', [])
     serializer = PsicologoSerializer(data=data, many=True)
 
-    if serializer.is_valid():  # <-- alinhado com serializer
-        serializer.save()
-        return Response({"success": True, "created": len(data)}, status=201)
+    if serializer.is_valid():
+        try:
+            created = serializer.save()  # retorna lista de instâncias com many=True
+            # cria vínculo na tabela de associação (se você a usa)
+            for psic in created:
+                if getattr(psic, "id_clinica_id", None):
+                    ClinicaPsicologos.objects.get_or_create(
+                        id_clinica=psic.id_clinica,
+                        id_psicologo=psic
+                    )
+            return Response({"success": True, "psicologos": PsicologoSerializer(created, many=True).data}, status=status.HTTP_201_CREATED)
+        except IntegrityError as e:
+            return Response({"success": False, "errors": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({"success": False, "errors": serializer.errors}, status=400)
+    return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def listar_psicologos(request):
+    try:
+        id_clinica = request.query_params.get('id_clinica')
+        usuario_id = request.query_params.get('usuario_id')
+        usuario_email = request.query_params.get('usuario_email')
+
+        qs = Psicologo.objects.all()
+
+        if id_clinica:
+            qs = qs.filter(id_clinica=id_clinica)
+        elif usuario_id:
+            clinica = Clinicas.objects.filter(id_usuario=usuario_id).first()
+            qs = qs.filter(id_clinica=clinica.id_clinica) if clinica else Psicologo.objects.none()
+        elif usuario_email:
+            clinica = Clinicas.objects.filter(id_usuario__email=usuario_email).first()
+            qs = qs.filter(id_clinica=clinica.id_clinica) if clinica else Psicologo.objects.none()
+
+        serializer = PsicologoSerializer(qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 @api_view(['GET'])
 def listar_psicologos(request):
     try:
@@ -554,20 +586,16 @@ def listar_usuarios(request):
 # views.py
 @api_view(['GET'])
 def psicologo_por_usuario(request, usuario_id):
-    try:
-        psicologo = Psicologo.objects.get(id_usuario=usuario_id)
-        serializer = PsicologoSerializer(psicologo)
-        return Response(serializer.data)
-    except Psicologo.DoesNotExist:
-        return Response({"erro": "Psicólogo não encontrado para este usuário"}, status=404)
+    psicologo = Psicologo.objects.filter(id_usuario=usuario_id).first()
+    if not psicologo:
+        return Response({"detail": "Psicólogo não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    return Response(PsicologoSerializer(psicologo).data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def clinica_por_usuario(request, usuario_id):
-    try:
-        clinica = Clinicas.objects.get(id_usuario=usuario_id)
-        serializer = ClinicasSerializer(clinica)
-        return Response(serializer.data)
-    except Clinicas.DoesNotExist:
-        return Response({"erro": "Clínica não encontrada para este usuário"}, status=404)
+    clinica = Clinicas.objects.filter(id_usuario=usuario_id).first()
+    if not clinica:
+        return Response({"detail": "Clínica não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    return Response(ClinicasSerializer(clinica).data, status=status.HTTP_200_OK)
 
 

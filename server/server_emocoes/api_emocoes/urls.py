@@ -1,9 +1,11 @@
 from django.urls import path
 from .views import usuarios,listar_clinicas,listar_psicologos,listar_pacientes,clinica_por_usuario,psicologo_por_usuario,listar_usuarios,listar_consultas,listar_imagens_usuario
 from .views import criar_usuario,popular_pacientes,popular_psicologos,popular_consulta,popular_imagens,popular_clinicas
+from . import views
+
 urlpatterns = [
     path('popular/pacientes/', popular_pacientes, name='popular_pacientes'),
-    path('popular/psicologos/', popular_psicologos, name='popular_psicologos'),
+    path('popular/psicologos/', views.popular_psicologos, name='popular_psicologos'),
     path('popular/consultas/', popular_consulta, name='popular_consultas'),
     path('listar/consultas/', listar_consultas, name='listar_consultas'),
     path('login/usuario/', usuarios, name='login_usuario'),
@@ -12,9 +14,9 @@ urlpatterns = [
     path("imagens/usuario/<int:id_usuario>/", listar_imagens_usuario),
     path('popular/clinicas/',popular_clinicas, name='popular_clinica'),
     path('listar/clinicas/', listar_clinicas, name='listar_clinicas'),
-    path('listar/psicologos/', listar_psicologos, name='listar_psicologos'),
+    path('listar/psicologos/', views.listar_psicologos, name='listar_psicologos'),
     path('listar/pacientes/', listar_pacientes, name='listar_pacientes'),
     path('listar/usuarios/', listar_usuarios, name='listar_usuarios'),
-    path('clinica/usuario/<int:usuario_id>/', clinica_por_usuario, name='clinica_por_usuario'),
-    path('psicologo/usuario/<int:usuario_id>/', psicologo_por_usuario, name='psicologo_por_usuario'),
+    path('clinica/usuario/<int:usuario_id>/', views.clinica_por_usuario, name='clinica_por_usuario'),
+    path('psicologo/usuario/<int:usuario_id>/', views.psicologo_por_usuario, name='psicologo_por_usuario'),
 ]

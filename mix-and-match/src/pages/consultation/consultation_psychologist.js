@@ -17,15 +17,28 @@ export default function Consultationpsychologist({ onNavigateBack, userId }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [resPsicologos, resPacientes,resClinica] = await Promise.all([
-                    axios.get(`${API_URL}/listar/psicologos/`),
+                const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+                // Monte os params para filtrar por clínica
+                const params = {};
+                if (usuario?.tipo_usuario === 'clinica') {
+                    params.tipo_usuario = 'clinica';
+                    if (usuario.id_clinica) {
+                        params.id_clinica = usuario.id_clinica;
+                    } else if (usuario.email) {
+                        params.usuario_email = usuario.email;
+                    }
+                }
+
+                const [resPsicologos, resPacientes, resClinica] = await Promise.all([
+                    axios.get(`${API_URL}/listar/psicologos/`, { params }),
                     axios.get(`${API_URL}/listar/pacientes/`),
                     axios.get(`${API_URL}/listar/clinicas/`),
                 ]);
 
                 setPsicologos(resPsicologos.data);
                 setPacientes(resPacientes.data);
-                setClinica(resClinica.data)
+                setClinica(resClinica.data);
             } catch (err) {
                 setError("Erro ao buscar dados.");
                 console.error(err);
