@@ -3,7 +3,7 @@ import axios from "axios";
 import "./register.css";
 import { API_URL } from "../../service/api_service";
 
-export default function RegisterPsicologo({ onRegisterSuccess }) {
+export default function RegisterPsicologo({ onRegisterSuccess, onCancel }) {
     const [nomePsicologo, setNomePsicologo] = useState("");
     const [abordagem, setAbordagem] = useState("");
     const [crp, setCrp] = useState("");
@@ -72,6 +72,11 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
         }
     };
 
+    const handleCancel = () => {
+        if (typeof onCancel === "function") return onCancel();
+        if (window.history.length > 1) return window.history.back();
+    };
+
     return (
         <div className="login-container">
             <form onSubmit={handleSubmit} className="login-form">
@@ -117,7 +122,10 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
                     required
                 />
 
-                <button type="submit">Cadastrar Psicólogo</button>
+                <div>
+                    <button type="button" onClick={handleCancel}>Cancelar</button>
+                    <button type="submit">Cadastrar Psicólogo</button>
+                </div>
 
                 {mensagem && <p className="mensagem">{mensagem}</p>}
             </form>

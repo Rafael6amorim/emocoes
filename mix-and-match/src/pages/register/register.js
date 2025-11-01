@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../service/api_service";
+import "./register.css";
 
-export default function Register({ onRegisterSuccess }) {
+export default function Register({ onRegisterSuccess, onCancel }) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [tipoUsuario, setTipoUsuario] = useState("");
@@ -95,6 +96,11 @@ export default function Register({ onRegisterSuccess }) {
         }
     };
 
+    const handleCancel = () => {
+        if (typeof onCancel === "function") return onCancel();
+        if (window.history.length > 1) return window.history.back();
+    };
+
     return (
         <div className="login-container">
             <form onSubmit={handleSubmit} className="login-form">
@@ -184,7 +190,10 @@ export default function Register({ onRegisterSuccess }) {
                     </>
                 )}
 
-                <button type="submit">Cadastrar</button>
+                <div>
+                    <button type="button" onClick={handleCancel}>Cancelar</button>
+                    <button type="submit">Cadastrar</button>
+                </div>
 
                 {mensagem && <p className="mensagem">{mensagem}</p>}
             </form>

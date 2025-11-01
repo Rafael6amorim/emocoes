@@ -56,7 +56,7 @@ aside {
     border: 1px solid black;
     overflow-x: hidden;
     background-color: #EEDFB4;
-    z-index: 11;
+    z-index: 10000;
 }
 
 aside.show {
@@ -145,7 +145,7 @@ ul li img {
     /* Inicialmente escondido */
     border: 1px solid black;
     flex-direction: column;
-    z-index: 100;
+    z-index: 10000;
     width: 30%;
     /* Mudei de max-width para width */
     right: 0;
@@ -457,11 +457,17 @@ ul li img {
         width: 100%;
     }
 
+    .button {
+        padding: 1rem 1rem;
+    }
     .button-voltar {
-        bottom: auto;
-        left: auto;
-        top: 10px;
+        left: 10px;
+        bottom: 13%;
+    }
+
+    .button-salvar {
         right: 10px;
+        bottom: 13%;
     }
 
     .hair-longo-liso-img {
