@@ -27,11 +27,25 @@
 }
 
 @keyframes swing {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(3deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-3deg); }
-    100% { transform: rotate(0deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(3deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }
 
 .register-container input,
@@ -80,7 +94,8 @@
 .mensagem {
     margin-top: 1rem;
     font-weight: 500;
-    color: #e11d48; /* vermelho para erros */
+    color: #e11d48;
+    /* vermelho para erros */
 }
 
 .psicologo-fields,
@@ -89,4 +104,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+}
+
+.form-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }

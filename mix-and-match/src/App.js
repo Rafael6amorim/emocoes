@@ -69,6 +69,7 @@ function App() {
       {screen === 'register' && (
         <Register
           onRegisterSuccess={() => setScreen('login')}
+          onCancel={() => setScreen('login')}
         />
       )}
 
@@ -127,14 +128,14 @@ function App() {
       {screen === 'register-psicologo' && (
         <RegisterPsicologo
           onRegisterSuccess={() => setScreen('home')}
-          onNavigateBack={() => setScreen('hambiente')}
+          onCancel={() => setScreen('home')}
         />
       )}
 
       {screen === 'register-paciente' && (
         <RegisterPaciente
           onRegisterSuccess={() => setScreen('home')}
-          onNavigateBack={() => setScreen('hambiente')}
+          onCancel={() => setScreen('home')}
         />
       )}
 

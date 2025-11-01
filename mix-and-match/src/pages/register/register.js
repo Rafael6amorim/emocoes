@@ -97,8 +97,7 @@ export default function Register({ onRegisterSuccess, onCancel }) {
     };
 
     const handleCancel = () => {
-        if (typeof onCancel === "function") return onCancel();
-        if (window.history.length > 1) return window.history.back();
+        if (typeof onCancel === "function") onCancel();
     };
 
     return (
@@ -190,7 +189,7 @@ export default function Register({ onRegisterSuccess, onCancel }) {
                     </>
                 )}
 
-                <div>
+                <div className="form-buttons-container">
                     <button type="button" onClick={handleCancel}>Cancelar</button>
                     <button type="submit">Cadastrar</button>
                 </div>
