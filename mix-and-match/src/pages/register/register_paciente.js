@@ -22,7 +22,7 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
             // Buscar o psicólogo pelo ID do usuário
             let id_psicologo = null;
             try {
-                const response = await axios.get(`${API_URL}/api/psicologo/usuario/${usuarioLogado.id_usuario}/`);
+                const response = await axios.get(`${API_URL}/psicologo/usuario/${usuarioLogado.id_usuario}/`);
                 console.log("Resposta da API:", response.data);
                 
                 // Verifica se a resposta é um array ou um objeto único
@@ -52,7 +52,7 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
 
             // 1️⃣ Primeiro criar um novo usuário para o paciente
             const resUsuario = await axios.post(
-                `${API_URL}/api/criar_Usuario/usario/`,
+                `${API_URL}/criar_Usuario/usario/`,
                 {
                     email,
                     senha,
@@ -71,7 +71,7 @@ export default function RegisterPaciente({ onRegisterSuccess }) {
                 id_usuario: id_usuario_paciente // ID do novo usuário criado para o paciente
             };
 
-            await axios.post(`${API_URL}/api/popular/pacientes/`, {
+            await axios.post(`${API_URL}/popular/pacientes/`, {
                 pacientes: [dadosPaciente],
             });
 
