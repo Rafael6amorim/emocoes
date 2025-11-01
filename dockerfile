@@ -32,6 +32,11 @@ COPY --from=frontend-build /app/mix-and-match/build/static /app/static/
 # Index do SPA fora do STATIC_ROOT
 COPY --from=frontend-build /app/mix-and-match/build/index.html /app/spa/index.html
 
+# ADICIONE: copiar a pasta assets (e manifest/favicon se quiser evitar warnings do PWA)
+COPY --from=frontend-build /app/mix-and-match/build/assets /app/mix-and-match/build/assets
+COPY --from=frontend-build /app/mix-and-match/build/manifest.json /app/mix-and-match/build/manifest.json
+COPY --from=frontend-build /app/mix-and-match/build/favicon.ico /app/mix-and-match/build/favicon.ico
+
 # Collectstatic no diretório do Django
 WORKDIR /app/server/server_emocoes
 RUN python manage.py collectstatic --noinput
