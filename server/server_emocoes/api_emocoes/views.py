@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
-from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas,ViewConsultaPsicologo,VwConsultasDetalhes
+from .models import Pacientes,Consultas,Psicologo,Usuarios,ImagensSalvas,Clinicas,ViewConsultaPsicologo,VwConsultasDetalhes, ClinicaPsicologos
 from .serializers import PacientesSerializer,PsicologoSerializer,ConsultasSerializer,UsuariosSerializer
 from .serializers import ClinicasSerializer,ImagensSalvasSerializer,ViewConsultaPsicologoSerializer,VwConsultasDetalhesSerializer
 import base64
@@ -97,29 +97,37 @@ def popular_psicologos(request):
 @api_view(['GET'])
 def listar_psicologos(request):
     try:
-        tipo_usuario = request.GET.get('tipo_usuario')
+        tipo_usuario_raw = request.GET.get('tipo_usuario') or ''
+        tipo_usuario = tipo_usuario_raw.lower()
         usuario_email = request.GET.get('usuario_email')
         id_clinica = request.GET.get('id_clinica')
 
         qs = ViewConsultaPsicologo.objects.all()
 
-        # Filtra por clínica (prioriza id_clinica; se não houver, usa o email do dono da clínica)
-        if tipo_usuario == 'clinica':
+        # Determina se devemos filtrar por clínica
+        is_clinica = tipo_usuario in {'clinica', 'clínica', 'clinic'}
+        wants_clinic_filter = is_clinica or bool(id_clinica) or (usuario_email and usuario_email != 'undefined')
+
+        if wants_clinic_filter:
             try:
+                # Resolve id da clínica via param direto ou email do dono
                 if id_clinica:
                     clinica = Clinicas.objects.get(id_clinica=id_clinica)
                 elif usuario_email and usuario_email != 'undefined':
                     clinica = Clinicas.objects.get(id_usuario__email=usuario_email)
                 else:
-                    return Response({"erro": "Para clínica, informe id_clinica ou usuario_email"}, status=400)
+                    return Response({"erro": "Informe id_clinica ou usuario_email do dono da clínica"}, status=400)
 
-                ids_psicologos = list(
-                    Psicologo.objects.filter(id_clinica=clinica.id_clinica)
-                    .values_list('id_psicologo', flat=True)
-                )
+                # IDs por FK direta
+                ids_fk = Psicologo.objects.filter(id_clinica=clinica.id_clinica).values_list('id_psicologo', flat=True)
+
+                # IDs via tabela de junção (se usada)
+                ids_m2m = ClinicaPsicologos.objects.filter(id_clinica=clinica.id_clinica).values_list('id_psicologo', flat=True)
+
+                ids_psicologos = list(set(list(ids_fk) + list(ids_m2m)))
 
                 if ids_psicologos:
-                    qs = qs.filter(id_psicologo__in=ids_psicologos)
+                    qs = qs.filter(id_psicologo__in=ids_psicologos).distinct()
                 else:
                     qs = qs.none()
 

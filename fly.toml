@@ -29,5 +29,9 @@ app = "emocoes"
   cpu_kind = "shared"
   cpus = 1
 
+[[statics]]
+  guest_path = "/app/mix-and-match/build/assets"
+  url_prefix = "/assets"
+
 
 
