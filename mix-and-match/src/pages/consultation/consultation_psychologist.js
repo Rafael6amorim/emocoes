@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from '../../service/api_service';
 import "./consultation_psychologist.css";
+import "./consultation.css"; // reutiliza o estilo do empty state
 
 export default function Consultationpsychologist({ onNavigateBack, userId }) {
     console.log(userId);
-    
+
     const [psicologos, setPsicologos] = useState([]);
     const [pacientes, setPacientes] = useState([]);
     const [clinica, setClinica] = useState([]);
@@ -67,10 +68,10 @@ export default function Consultationpsychologist({ onNavigateBack, userId }) {
         };
     });
     console.log(userId);
-    
+
     const nomeClinica = clinica.find(clinica => clinica.id_usuario === userId)?.nome_clinica;
     console.log(clinica, "teste nome");
-    
+
 
     const handleCardClick = (psicologo) => {
         setSelectedPsicologo(psicologo);
@@ -90,46 +91,55 @@ export default function Consultationpsychologist({ onNavigateBack, userId }) {
 
     return (
         <div className="consultation-container">
-
+            <button onClick={onNavigateBack} className="back-button">
+                Voltar
+            </button>
+            
             <h1 className="">{nomeClinica}</h1>
             <h2>Psicólogos Ativos</h2>
 
             <div className="cards-list">
-                {psicologosComPacientes.map((psicologo) => (
-                    <div
-                        className="card"
-                        key={psicologo.id_psicologo}
-                        onClick={() => handleCardClick(psicologo)}
-                    >
-                        <div className="card-left">
-                            <img
-                                src={psicologo.foto || `${assetsPath}/image.png`}
-                                alt={psicologo.nome_psicologo}
-                                className="avatar"
-                                onError={(e) => {
-                                    e.target.src = `${assetsPath}/image.png`;
-                                }}
-                            />
-                            <div>
-                                <h3>{psicologo.nome_psicologo}</h3>
-                                <p>@{psicologo.email || psicologo.nome_psicologo.toLowerCase()}</p>
+                {psicologosComPacientes.length > 0 ? (
+                    psicologosComPacientes.map((psicologo) => (
+                        <div
+                            className="card"
+                            key={psicologo.id_psicologo}
+                            onClick={() => handleCardClick(psicologo)}
+                        >
+                            <div className="card-left">
+                                <img
+                                    src={psicologo.foto || `${assetsPath}/image.png`}
+                                    alt={psicologo.nome_psicologo}
+                                    className="avatar"
+                                    onError={(e) => {
+                                        e.target.src = `${assetsPath}/image.png`;
+                                    }}
+                                />
+                                <div>
+                                    <h3>{psicologo.nome_psicologo}</h3>
+                                    <p>@{psicologo.email || psicologo.nome_psicologo.toLowerCase()}</p>
+                                </div>
+                            </div>
+                            <div className="card-right">
+                                <p>
+                                    <strong>Especialidade:</strong> {psicologo.abordagem}
+                                </p>
+                                <p>
+                                    <strong>Pacientes:</strong> {psicologo.qt_pacientes}
+                                </p>
                             </div>
                         </div>
-                        <div className="card-right">
-                            <p>
-                                <strong>Especialidade:</strong> {psicologo.abordagem}
-                            </p>
-                            <p>
-                                <strong>Pacientes:</strong> {psicologo.qt_pacientes}
-                            </p>
-                        </div>
+                    ))
+                ) : (
+                    <div className="empty-patients">
+                        <div className="empty-icon">👥</div>
+                        <h3>Nenhum psicólogo ativo</h3>
+                        <p>Nenhum psicólogo com pacientes em tratamento no momento.</p>
                     </div>
-                ))}
+                )}
             </div>
 
-            <button onClick={onNavigateBack} className="back-button">
-                Voltar
-            </button>
+
 
             {/* Modal de pacientes */}
             {selectedPsicologo && (
@@ -158,8 +168,10 @@ export default function Consultationpsychologist({ onNavigateBack, userId }) {
                                     </div>
                                 ))
                             ) : (
-                                <div className="empty-pacientes">
-                                    <p>Nenhum paciente associado a este psicólogo</p>
+                                <div className="empty-patients">
+                                    <div className="empty-icon">👥</div>
+                                    <h3>Nenhum paciente ativo</h3>
+                                    <p>Nenhum paciente associado a este psicólogo.</p>
                                 </div>
                             )}
                         </div>

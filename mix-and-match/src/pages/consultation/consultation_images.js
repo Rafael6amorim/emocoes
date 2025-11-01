@@ -1,4 +1,5 @@
 import './consultation_images.css'
+import './consultation.css' // reutiliza o estilo do empty state
 import React, { useState, useEffect } from 'react';
 import { API_URL } from '../../service/api_service';
 
@@ -120,27 +121,35 @@ const ConsultationImages = ({ onNavigateBack }) => {
 
             {isComum ? (
                 <div className="imagens-usuario">
-                    <div className="imagens-grid">
-                        {consultas.map(img => (
-                            <div key={img.id_imagem} className="imagem-card">
-                                <h3>{img.nome_imagem}</h3>
-                                <p><strong>Data:</strong> {new Date(img.data_imagem).toLocaleString('pt-BR')}</p>
-                                {img.imagem_base64 ? (
-                                    <img
-                                        src={img.imagem_base64}
-                                        alt={img.nome_imagem}
-                                        className="preview-img"
-                                        onClick={() => setSelectedConsulta(img)}
-                                    />
-                                ) : (
-                                    <div className="image-placeholder">
-                                        <i className="fas fa-image"></i>
-                                        <p>Nenhuma imagem disponível</p>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                    {consultas.length > 0 ? (
+                        <div className="imagens-grid">
+                            {consultas.map(img => (
+                                <div key={img.id_imagem} className="imagem-card">
+                                    <h3>{img.nome_imagem}</h3>
+                                    <p><strong>Data:</strong> {new Date(img.data_imagem).toLocaleString('pt-BR')}</p>
+                                    {img.imagem_base64 ? (
+                                        <img
+                                            src={img.imagem_base64}
+                                            alt={img.nome_imagem}
+                                            className="preview-img"
+                                            onClick={() => setSelectedConsulta(img)}
+                                        />
+                                    ) : (
+                                        <div className="image-placeholder">
+                                            <i className="fas fa-image"></i>
+                                            <p>Nenhuma imagem disponível</p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="empty-patients">
+                            <div className="empty-icon">🖼️</div>
+                            <h3>Nenhuma imagem encontrada</h3>
+                            <p>Você ainda não possui imagens cadastradas.</p>
+                        </div>
+                    )}
 
                     {/* Modal para exibir imagem */}
                     {selectedConsulta && (
@@ -186,40 +195,47 @@ const ConsultationImages = ({ onNavigateBack }) => {
                         </div>
                     </div>
 
-                    {/* Lista agrupada por paciente */}
-                    {Object.entries(consultasPorPaciente).map(([paciente, consultasPaciente]) => (
-                        <div key={paciente} className="paciente-group">
-                            <h2 className="paciente-name">{paciente}</h2>
-                            <div className="consultas-grid">
-                                {consultasPaciente.map(consulta => (
-                                    <div key={consulta.id_consulta} className="consulta-card">
-                                        <div className="consulta-header">
-                                            <h3>Consulta #{consulta.id_consulta}</h3>
-                                            {consulta.tem_imagem && <span className="badge has-image">Tem Imagem</span>}
-                                        </div>
-                                        <div className="consulta-info">
-                                            <p><strong>Data:</strong> {new Date(consulta.data_consulta).toLocaleDateString('pt-BR')}</p>
-                                            <p><strong>Idade:</strong> {consulta.idade} anos</p>
-                                            <p><strong>Tratamento:</strong> {consulta.tipo_tratamento}</p>
-                                            {consulta.nome_psicologo && (
-                                                <p><strong>Psicólogo:</strong> {consulta.nome_psicologo} - CRP: {consulta.crp}</p>
-                                            )}
-                                            <p><strong>Abordagem:</strong> {consulta.abordagem}</p>
-                                        </div>
-                                        <div className="consulta-actions">
-                                            <button
-                                                className="btn-view-image"
-                                                onClick={() => openImageModal(consulta)}
-                                                disabled={!consulta.tem_imagem}
-                                            >
-                                                {consulta.tem_imagem ? 'Ver Imagem' : 'Sem Imagem'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                    {filteredConsultas.length === 0 ? (
+                        <div className="empty-patients">
+                            <div className="empty-icon">📄</div>
+                            <h3>Nenhuma consulta encontrada</h3>
+                            <p>Não há consultas para exibir no momento.</p>
                         </div>
-                    ))}
+                    ) : (
+                        Object.entries(consultasPorPaciente).map(([paciente, consultasPaciente]) => (
+                            <div key={paciente} className="paciente-group">
+                                <h2 className="paciente-name">{paciente}</h2>
+                                <div className="consultas-grid">
+                                    {consultasPaciente.map(consulta => (
+                                        <div key={consulta.id_consulta} className="consulta-card">
+                                            <div className="consulta-header">
+                                                <h3>Consulta #{consulta.id_consulta}</h3>
+                                                {consulta.tem_imagem && <span className="badge has-image">Tem Imagem</span>}
+                                            </div>
+                                            <div className="consulta-info">
+                                                <p><strong>Data:</strong> {new Date(consulta.data_consulta).toLocaleDateString('pt-BR')}</p>
+                                                <p><strong>Idade:</strong> {consulta.idade} anos</p>
+                                                <p><strong>Tratamento:</strong> {consulta.tipo_tratamento}</p>
+                                                {consulta.nome_psicologo && (
+                                                    <p><strong>Psicólogo:</strong> {consulta.nome_psicologo} - CRP: {consulta.crp}</p>
+                                                )}
+                                                <p><strong>Abordagem:</strong> {consulta.abordagem}</p>
+                                            </div>
+                                            <div className="consulta-actions">
+                                                <button
+                                                    className="btn-view-image"
+                                                    onClick={() => openImageModal(consulta)}
+                                                    disabled={!consulta.tem_imagem}
+                                                >
+                                                    {consulta.tem_imagem ? 'Ver Imagem' : 'Sem Imagem'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))
+                    )}
 
                     {/* Modal de consulta antigo */}
                     {selectedConsulta && (
