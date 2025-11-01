@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "../../service/api_service";
 
 export default function Register({ onRegisterSuccess }) {
     const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function Register({ onRegisterSuccess }) {
     const carregarClinicas = async () => {
         setLoadingClinicas(true);
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/listar/clinicas/");
+            const response = await axios.get(`${API_URL}/api/listar/clinicas/`);
             setClinicas(response.data);
         } catch (error) {
             console.error("Erro ao carregar clínicas:", error);
@@ -41,7 +42,7 @@ export default function Register({ onRegisterSuccess }) {
         try {
             // 1️⃣ Cria o usuário
             const resUsuario = await axios.post(
-                "http://127.0.0.1:8000/api/criar_Usuario/usario/",
+                `${API_URL}/api/criar_Usuario/usario/`,
                 {
                     email,
                     senha,
@@ -65,14 +66,14 @@ export default function Register({ onRegisterSuccess }) {
                     dadosPsicologo.id_clinica = parseInt(idClinica);
                 }
 
-                await axios.post("http://127.0.0.1:8000/api/popular/psicologos/", {
+                await axios.post(`${API_URL}/api/popular/psicologos/`, {
                     psicologos: [dadosPsicologo],
                 });
             }
 
             // 3️⃣ Se for clínica, cadastrar na tabela de clínicas
             if (tipoUsuario === "clinica") {
-                await axios.post("http://127.0.0.1:8000/api/popular/clinicas/", {
+                await axios.post(`${API_URL}/api/popular/clinicas/`, {
                     clinicas: [
                         {
                             id_usuario,

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./register.css";
+import { API_URL } from "../../service/api_service";
 
 export default function RegisterPsicologo({ onRegisterSuccess }) {
     const [nomePsicologo, setNomePsicologo] = useState("");
@@ -21,7 +22,7 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
             // Buscar a clínica pelo ID do usuário
             let id_clinica = null;
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/clinica/usuario/${usuarioLogado.id_usuario}/`);
+                const response = await axios.get(`${API_URL}/api/clinica/usuario/${usuarioLogado.id_usuario}/`);
                 if (response.data && response.data.id_clinica) {
                     id_clinica = response.data.id_clinica;
                     console.log("Clínica encontrada:", id_clinica);
@@ -38,7 +39,7 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
 
             // 1️⃣ Primeiro criar um novo usuário para o psicólogo
             const resUsuario = await axios.post(
-                "http://127.0.0.1:8000/api/criar_Usuario/usario/",
+                `${API_URL}/api/criar_Usuario/usario/`,
                 {
                     email,
                     senha,
@@ -57,7 +58,7 @@ export default function RegisterPsicologo({ onRegisterSuccess }) {
                 id_clinica: id_clinica // ID da clínica encontrada
             };
 
-            await axios.post("http://127.0.0.1:8000/api/popular/psicologos/", {
+            await axios.post(`${API_URL}/api/popular/psicologos/`, {
                 psicologos: [dadosPsicologo],
             });
 
