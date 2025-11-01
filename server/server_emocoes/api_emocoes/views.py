@@ -96,10 +96,41 @@ def popular_psicologos(request):
 
 @api_view(['GET'])
 def listar_psicologos(request):
-    psicologos = ViewConsultaPsicologo.objects.all()
-    serializer = ViewConsultaPsicologoSerializer(psicologos, many=True)
-    return Response(serializer.data)
+    try:
+        tipo_usuario = request.GET.get('tipo_usuario')
+        usuario_email = request.GET.get('usuario_email')
+        id_clinica = request.GET.get('id_clinica')
 
+        qs = ViewConsultaPsicologo.objects.all()
+
+        # Filtra por clínica (prioriza id_clinica; se não houver, usa o email do dono da clínica)
+        if tipo_usuario == 'clinica':
+            try:
+                if id_clinica:
+                    clinica = Clinicas.objects.get(id_clinica=id_clinica)
+                elif usuario_email and usuario_email != 'undefined':
+                    clinica = Clinicas.objects.get(id_usuario__email=usuario_email)
+                else:
+                    return Response({"erro": "Para clínica, informe id_clinica ou usuario_email"}, status=400)
+
+                ids_psicologos = list(
+                    Psicologo.objects.filter(id_clinica=clinica.id_clinica)
+                    .values_list('id_psicologo', flat=True)
+                )
+
+                if ids_psicologos:
+                    qs = qs.filter(id_psicologo__in=ids_psicologos)
+                else:
+                    qs = qs.none()
+
+            except Clinicas.DoesNotExist:
+                return Response({"erro": "Clínica não encontrada"}, status=404)
+
+        serializer = ViewConsultaPsicologoSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    except Exception as e:
+        return Response({"erro": str(e)}, status=400)
 
 @swagger_auto_schema(
     method='post',
@@ -303,27 +334,53 @@ def listar_consultas(request):
         tipo_usuario = request.GET.get('tipo_usuario')
         usuario_email = request.GET.get('usuario_email')
         usuario_nome = request.GET.get('usuario_nome')
-        
-        print(f"🎯 Parâmetros: tipo_usuario={tipo_usuario}, usuario_email={usuario_email}")
-        
+        id_clinica = request.GET.get('id_clinica')
+
+        print(f"🎯 Parâmetros: tipo_usuario={tipo_usuario}, usuario_email={usuario_email}, id_clinica={id_clinica}")
+
         consultas = VwConsultasDetalhes.objects.all()
-        
+
         if tipo_usuario and usuario_email and usuario_email != 'undefined':
             if tipo_usuario == 'psicologo':
                 consultas = consultas.filter(email_psicologo=usuario_email)
-                print(f"✅ Filtrado por email: {usuario_email}")
-                
+                print(f"✅ Filtrado por email do psicólogo: {usuario_email}")
+
             elif tipo_usuario == 'comum':
                 consultas = consultas.filter(nome_paciente=usuario_nome)
-        
+
+        # Novo: filtrar por clínica (via id_clinica ou email do dono da clínica)
+        if tipo_usuario == 'clinica':
+            try:
+                # Resolve a clínica
+                if id_clinica:
+                    clinica = Clinicas.objects.get(id_clinica=id_clinica)
+                elif usuario_email and usuario_email != 'undefined':
+                    clinica = Clinicas.objects.get(id_usuario__email=usuario_email)
+                else:
+                    return Response({"erro": "Para clínica, informe id_clinica ou usuario_email"}, status=400)
+
+                # Coleta os emails dos psicólogos dessa clínica
+                psicologos_emails = list(
+                    Usuarios.objects.filter(psicologo__id_clinica=clinica.id_clinica)
+                    .values_list('email', flat=True)
+                    .distinct()
+                )
+
+                if psicologos_emails:
+                    consultas = consultas.filter(email_psicologo__in=psicologos_emails)
+                else:
+                    consultas = consultas.none()
+
+            except Clinicas.DoesNotExist:
+                return Response({"erro": "Clínica não encontrada"}, status=404)
+
         print(f"📦 Consultas encontradas: {consultas.count()}")
-        
-        # Processa os dados MANUALMENTE para garantir todos os campos
+
         resultado = []
         for consulta in consultas:
             imagem_base64 = None
             tem_imagem = False
-            
+
             if consulta.imagens:
                 tem_imagem = True
                 try:
@@ -333,14 +390,12 @@ def listar_consultas(request):
                         image_bytes = consulta.imagens
                     else:
                         image_bytes = None
-                    
+
                     if image_bytes:
                         imagem_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
-                        
                 except Exception as e:
                     print(f"Erro ao processar imagem: {e}")
-            
-            # INCLUA TODOS OS CAMPOS QUE PRECISA
+
             consulta_data = {
                 "id_consulta": consulta.id_consulta,
                 "data_consulta": consulta.data_consulta,
@@ -350,13 +405,13 @@ def listar_consultas(request):
                 "nome_psicologo": consulta.nome_psicologo,
                 "abordagem": consulta.abordagem,
                 "crp": consulta.crp,
-                "email_psicologo": consulta.email_psicologo,  # ← Novo campo
+                "email_psicologo": consulta.email_psicologo,
                 "nome_imagens": consulta.nome_imagens,
                 "imagem_base64": imagem_base64,
                 "tem_imagem": tem_imagem
             }
             resultado.append(consulta_data)
-        
+
         return Response(resultado)
 
     except Exception as e:
